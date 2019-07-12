@@ -203,12 +203,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: SetDifficulty
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 5627175}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -335,11 +335,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1412458804}
-        m_MethodName: SelectMenu
-        m_Mode: 2
+        m_MethodName: ToDifficultyMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 13606695}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -546,11 +546,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1412458804}
-        m_MethodName: SelectMenu
-        m_Mode: 2
+        m_MethodName: ShopOptionsMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 112128026}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -752,11 +752,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: BackToMain
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 205740135}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -884,11 +884,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: SetDifficulty
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 300067915}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1105,12 +1105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3cbd53434a0f14ca876c8149d37c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beginnerButton: {fileID: 300067915}
-  experiencedButton: {fileID: 1866409820}
-  veteranButton: {fileID: 1657363501}
-  geniusButton: {fileID: 1699260430}
-  superhumanButton: {fileID: 5627175}
-  backToMainButton: {fileID: 205740135}
 --- !u!1 &563788756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,11 +1425,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1412458804}
-        m_MethodName: SelectMenu
-        m_Mode: 2
+        m_MethodName: ShowLoadingMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1019610102}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1882,10 +1876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d628424efbb29a4f9c8543700d033c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newGameButton: {fileID: 13606695}
-  loadGameButton: {fileID: 1019610102}
-  optionsButton: {fileID: 112128026}
-  quitButton: {fileID: 1808269974}
 --- !u!1 &1422734243
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,12 +2121,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: SetDifficulty
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1657363501}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2337,12 +2327,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: SetDifficulty
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1699260430}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2675,11 +2665,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1412458804}
-        m_MethodName: SelectMenu
-        m_Mode: 2
+        m_MethodName: ConfirmQuit
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1808269974}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2910,12 +2900,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 509724375}
-        m_MethodName: SelectDifficulty
-        m_Mode: 2
+        m_MethodName: SetDifficulty
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1866409820}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
