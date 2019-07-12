@@ -1,18 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Button = UnityEngine.UI.Button;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Button newGameButton;
+    [SerializeField] private Button loadGameButton;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button quitButton;
 
-    // Update is called once per frame
-    void Update()
+    public void SelectMenu(Button menuButton)
     {
-        
+        if (menuButton == newGameButton)
+        {
+            Managers.Menu.SelectDifficulty();
+        }
+        else if (menuButton == loadGameButton)
+        {
+            Managers.Menu.ShowLoadMenu();
+        }
+        else if (menuButton == optionsButton)
+        {
+            Managers.Menu.ShowOptions();
+        }
+        else if (menuButton == quitButton)
+        {
+            Managers.Menu.ConfirmQuit();
+        }
     }
 }
