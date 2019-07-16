@@ -7,6 +7,9 @@ public class DifficultyMenu : MonoBehaviour
         DifficultyLevel difficultyLevel = (DifficultyLevel) level;
         Managers.Data.SaveCurrentDifficulty(difficultyLevel);
         Debug.Log(Managers.Data.LoadCurrentDifficulty());
+
+        // Start new game after select difficulty
+        Managers.Mission.StartNewGame();
     }
 
     public void BackToMain()
