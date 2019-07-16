@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 public class GeoscapeCamera : MonoBehaviour
 {
     private float _zoomSpeed;
+    private float _rotateSpeed;
     private float _minDistance = 6.0f;
     private float _maxDistance = 12.0f;
     [SerializeField] private GameObject geoscape;
@@ -11,6 +12,7 @@ public class GeoscapeCamera : MonoBehaviour
     void Start()
     {
         _zoomSpeed = 10.0f;
+        _rotateSpeed = 10.0f;
     }
 
     void Update()
@@ -51,12 +53,13 @@ public class GeoscapeCamera : MonoBehaviour
                 GameObject hitObject = hit.transform.gameObject;
                 if (hitObject == geoscape)
                 {
-                    Vector3 targetPoint = hit.point;
-                    Quaternion targetRotation =
-                        Quaternion.LookRotation(targetPoint, 
-                            geoscape.gameObject.transform.position);
-                    geoscape.gameObject.transform.rotation = Quaternion.Slerp(geoscape.gameObject.transform.rotation,
-                        targetRotation, 5.0f * Time.deltaTime);
+                    //geoscape.gameObject.transform.Rotate(hit.point, Space.Self);
+                    //Vector3 targetPoint = hit.point;
+                    //Quaternion targetRotation =
+                    //    Quaternion.LookRotation(targetPoint,
+                    //        geoscape.gameObject.transform.position);
+                    //geoscape.gameObject.transform.rotation = Quaternion.Slerp(geoscape.gameObject.transform.rotation,
+                    //    targetRotation, _rotateSpeed);
                 }
             }
         }
