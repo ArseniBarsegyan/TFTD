@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GeoscapeCamera : MonoBehaviour
 {
@@ -38,6 +39,25 @@ public class GeoscapeCamera : MonoBehaviour
                 Camera.main.transform.position -= Camera.main.transform.forward
                                                   * Time.deltaTime
                                                   * _zoomSpeed;
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                GameObject hitObject = hit.transform.gameObject;
+                if (hitObject == geoscape)
+                {
+                    Vector3 targetPoint = hit.point;
+                    Quaternion targetRotation =
+                        Quaternion.LookRotation(targetPoint, 
+                            geoscape.gameObject.transform.position);
+                    geoscape.gameObject.transform.rotation = Quaternion.Slerp(geoscape.gameObject.transform.rotation,
+                        targetRotation, 5.0f * Time.deltaTime);
+                }
             }
         }
     }
