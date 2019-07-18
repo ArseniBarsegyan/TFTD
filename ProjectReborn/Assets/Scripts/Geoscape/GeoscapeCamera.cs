@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class GeoscapeCamera : MonoBehaviour
 {
@@ -15,9 +13,13 @@ public class GeoscapeCamera : MonoBehaviour
     private float _rotY;
     private Vector3 _offset;
 
+
+    Vector3 prevPosition = Vector3.zero;
+    Vector3 positionDelta = Vector3.zero;
+
     void Start()
     {
-        _offset = geoscape.gameObject.transform.position - transform.position;
+        _offset = geoscape.transform.position - transform.position;
     }
 
     void Update()
@@ -25,39 +27,36 @@ public class GeoscapeCamera : MonoBehaviour
         // Zoom in
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            Vector3 cameraPosition = Camera.main.transform.position;
-            Vector3 geoscapePosition = geoscape.gameObject.transform.position;
+            Vector3 cameraPosition = transform.position;
+            Vector3 geoscapePosition = geoscape.transform.position;
             float distance = Vector3.Distance(cameraPosition, geoscapePosition);
             if (distance > _minDistance)
             {
-                Camera.main.transform.position += Camera.main.transform.forward
-                                                  * Time.deltaTime
-                                                  * _zoomSpeed;
+                transform.position += transform.forward * Time.deltaTime * _zoomSpeed;
             }
         }
 
         // Zoom out
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            Vector3 cameraPosition = Camera.main.transform.position;
-            Vector3 geoscapePosition = geoscape.gameObject.transform.position;
+            Vector3 cameraPosition = transform.position;
+            Vector3 geoscapePosition = geoscape.transform.position;
             float distance = Vector3.Distance(cameraPosition, geoscapePosition);
 
             if (distance < _maxDistance)
             {
-                Camera.main.transform.position -= Camera.main.transform.forward
-                                                  * Time.deltaTime
-                                                  * _zoomSpeed;
+                transform.position -= transform.forward * Time.deltaTime * _zoomSpeed;
             }
         }
     }
 
-    // TODO: zoom changes _offset
     void LateUpdate()
     {
-        // Rotation and follow for the globe
+        // Rotation and follow the globe
         if (Input.GetMouseButton(0))
         {
+            positionDelta = Input.mousePosition - prevPosition;
+
             float horInput = Input.GetAxis("Horizontal");
             if (horInput != 0)
             {
@@ -78,41 +77,30 @@ public class GeoscapeCamera : MonoBehaviour
             transform.position = geoscape.transform.position - (rotation * _offset); // const delta that change its position with camera rotation
             transform.LookAt(geoscape.transform); // camera always look at it's target
         }
+        prevPosition = Input.mousePosition;
 
-        // TODO: Fix rotation.
         if (Input.GetMouseButtonDown(1))
         {
-            Ray initialRay = Camera.main.ScreenPointToRay(new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0));
-            RaycastHit initialHit;
+            // TODO: it works properly but need to rotate and center camera on specific point
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (Physics.Raycast(initialRay, out initialHit))
-                {
-                    GameObject hitObject = hit.transform.gameObject;
-                    if (initialHit.transform.gameObject == hitObject)
-                    {
-                        if (hitObject == geoscape)
-                        {
-                            Vector3 initialPoint = initialHit.point;
-                            Vector3 targetPoint = hit.normal;
-                            _rotX -= (targetPoint.x - initialPoint.x);
-                            _rotY -= (targetPoint.y - initialPoint.y);
-                            float rotZ = targetPoint.z - initialPoint.z;
+                GameObject hitObject = hit.transform.gameObject;
+                StartCoroutine(EmptyObject(hit.point));
 
-                            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, rotZ);
-                            transform.position = geoscape.transform.position - (rotation * _offset);
-                            transform.LookAt(geoscape.transform);
-                        }
-                    }
-                }
+                Quaternion rotation = Quaternion.Euler(hit.point);
+                transform.position = geoscape.transform.position - (rotation * _offset);
+                transform.LookAt(geoscape.transform);
             }
         }
     }
 
-    private IEnumerator RotateCameraToGlobePoint()
+    private IEnumerator EmptyObject(Vector3 pos)
     {
-        yield return null;
+        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.position = pos;
+        yield return new WaitForSeconds(1);
+        Destroy(sphere);
     }
 }
