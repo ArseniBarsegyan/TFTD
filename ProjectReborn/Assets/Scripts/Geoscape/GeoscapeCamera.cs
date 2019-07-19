@@ -89,8 +89,14 @@ public class GeoscapeCamera : MonoBehaviour
                 GameObject hitObject = hit.transform.gameObject;
                 StartCoroutine(EmptyObject(hit.point));
 
-                Quaternion rotation = Quaternion.Euler(hit.point);
-                transform.position = geoscape.transform.position - (rotation * _offset);
+                Quaternion targetRotation = Quaternion.LookRotation(transform.position, hit.transform.forward);
+                //Quaternion rotation = Quaternion.RotateTowards(transform.rotation, hit.transform.rotation, Time.deltaTime * 10);
+
+                Vector3 newCameraPosition = hit.point + (targetRotation * _offset * 0.5f);
+                //transform.position = hit.point + (rotation * _offset * 0.5f);
+                //transform.LookAt(geoscape.transform);
+
+                transform.position = newCameraPosition;
                 transform.LookAt(geoscape.transform);
             }
         }
