@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
 {
-    private float _zoomSpeed = 10.0f;
+    private float _zoomSpeed = 2.0f;
     private float _rotateSpeed = 4.0f;
     private float _minDistance = 6.0f;
     private float _maxDistance = 12.0f;
@@ -12,10 +12,6 @@ public class GeoscapeCamera : MonoBehaviour
     private float _rotX;
     private float _rotY;
     private Vector3 _offset;
-
-
-    Vector3 prevPosition = Vector3.zero;
-    Vector3 positionDelta = Vector3.zero;
 
     void Start()
     {
@@ -32,7 +28,8 @@ public class GeoscapeCamera : MonoBehaviour
             float distance = Vector3.Distance(cameraPosition, geoscapePosition);
             if (distance > _minDistance)
             {
-                transform.position += transform.forward * Time.deltaTime * _zoomSpeed;
+                Vector3 targetDestination = transform.position + transform.forward * _zoomSpeed;
+                StartCoroutine(ZoomSmoothly(targetDestination));
             }
         }
 
@@ -45,8 +42,22 @@ public class GeoscapeCamera : MonoBehaviour
 
             if (distance < _maxDistance)
             {
-                transform.position -= transform.forward * Time.deltaTime * _zoomSpeed;
+                Vector3 targetDestination = transform.position - transform.forward * _zoomSpeed;
+
+                StartCoroutine(ZoomSmoothly(targetDestination));
             }
+        }
+    }
+
+    private IEnumerator ZoomSmoothly(Vector3 destination)
+    {
+        float t = 0f;
+        while (t < 0.5f)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, destination, Mathf.SmoothStep(0f, 0.5f, t));
+            transform.LookAt(geoscape.transform);
+            yield return null;
         }
     }
 
@@ -55,8 +66,6 @@ public class GeoscapeCamera : MonoBehaviour
         // Rotation and follow the globe
         if (Input.GetMouseButton(0))
         {
-            positionDelta = Input.mousePosition - prevPosition;
-
             float horInput = Input.GetAxis("Horizontal");
             if (horInput != 0)
             {
@@ -73,35 +82,54 @@ public class GeoscapeCamera : MonoBehaviour
                 _rotX -= verticalInput * _rotateSpeed;
             }
 
+            if (verticalInput == 0 && horInput == 0)
+            {
+                return;
+            }
+
             Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
-            transform.position = geoscape.transform.position - (rotation * _offset); // const delta that change its position with camera rotation
-            transform.LookAt(geoscape.transform); // camera always look at it's target
+            Vector3 targetPosition = geoscape.transform.position - (rotation * _offset);
+            StartCoroutine(Rotate_Routine(targetPosition));
         }
-        prevPosition = Input.mousePosition;
 
         if (Input.GetMouseButtonDown(1))
         {
-            // TODO: it works properly but need to rotate and center camera on specific point
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                GameObject hitObject = hit.transform.gameObject;
-                StartCoroutine(EmptyObject(hit.point));
-
                 Quaternion targetRotation = Quaternion.LookRotation(transform.position, hit.transform.forward);
-                //Quaternion rotation = Quaternion.RotateTowards(transform.rotation, hit.transform.rotation, Time.deltaTime * 10);
 
-                Vector3 newCameraPosition = hit.point + (targetRotation * _offset * 0.5f);
-                //transform.position = hit.point + (rotation * _offset * 0.5f);
-                //transform.LookAt(geoscape.transform);
-
-                transform.position = newCameraPosition;
-                transform.LookAt(geoscape.transform);
+                Vector3 newCameraPosition = hit.point + (targetRotation * _offset * 0.4f);
+                StartCoroutine(Move_Routine(hit.transform.right, newCameraPosition));
             }
         }
     }
 
+    private IEnumerator Move_Routine(Vector3 observableTarget, Vector3 targetPosition)
+    {
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.SmoothStep(0f, 1f, t));
+            transform.LookAt(observableTarget);
+            yield return null;
+        }
+    }
+
+    private IEnumerator Rotate_Routine(Vector3 targetPosition)
+    {
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.SmoothStep(0f, 1f, t));
+            transform.LookAt(geoscape.transform);
+            yield return null;
+        }
+    }
+
+    // TODO: Later replace with Alien Sub spawn
     private IEnumerator EmptyObject(Vector3 pos)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
