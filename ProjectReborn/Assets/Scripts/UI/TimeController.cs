@@ -1,4 +1,6 @@
 ﻿using System;
+using TMPro;
+using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +12,7 @@ public class TimeController : MonoBehaviour
 
     [SerializeField] private Text dateLabel;
     [SerializeField] private Text timeLabel;
+    [SerializeField] private GameObject globe;
 
     void Start()
     {
@@ -18,6 +21,25 @@ public class TimeController : MonoBehaviour
 
     void Update()
     {
+        float rotationAngle = 0.0f;
+        switch (_currentSpeed)
+        {
+            case 86400f:
+                rotationAngle = 360f;
+                break;
+            case 21600f:
+                rotationAngle = 180f;
+                break;
+            case 3600f:
+                rotationAngle = 15f;
+                break;
+            case 1.0f:
+                rotationAngle = 0.00416666666f;
+                break;
+        }
+        globe.transform.RotateAround(Vector3.zero, globe.transform.up, rotationAngle * Time.deltaTime);
+        Camera.main.transform.RotateAround(Vector3.zero, globe.transform.up, rotationAngle * Time.deltaTime);
+
         dateLabel.text = _currentDate.ToString("d");
         timeLabel.text = _currentDate.ToString("HH:mm:ss");
         _currentDate = _currentDate.AddSeconds(Time.deltaTime * _currentSpeed);
