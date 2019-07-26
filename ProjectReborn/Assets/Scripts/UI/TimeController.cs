@@ -1,6 +1,4 @@
 ﻿using System;
-using TMPro;
-using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +14,7 @@ public class TimeController : MonoBehaviour
 
     void Start()
     {
-        _currentDate = DateTime.Parse("01/01/2042 12:00");
+        _currentDate = DateTime.Parse("01/01/2042 09:00");
     }
 
     void Update()
@@ -37,8 +35,8 @@ public class TimeController : MonoBehaviour
                 rotationAngle = 0.00416666666f;
                 break;
         }
-        globe.transform.RotateAround(Vector3.zero, globe.transform.up, rotationAngle * Time.deltaTime);
-        Camera.main.transform.RotateAround(Vector3.zero, globe.transform.up, rotationAngle * Time.deltaTime);
+        globe.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
+        Camera.main.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
 
         dateLabel.text = _currentDate.ToString("d");
         timeLabel.text = _currentDate.ToString("HH:mm:ss");

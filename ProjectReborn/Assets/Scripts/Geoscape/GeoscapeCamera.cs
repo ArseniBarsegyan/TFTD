@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
@@ -37,17 +36,13 @@ public class GeoscapeCamera : MonoBehaviour
         // Rotation and follow the globe
         if (Input.GetMouseButton(0))
         {
-            float horInput = Input.GetAxis("Horizontal");
+            float horInput = Input.GetAxis("Mouse X");
             if (horInput != 0)
-            {
-                _rotY += horInput * _rotateSpeed;
-            }
-            else
             {
                 _rotY += Input.GetAxis("Mouse X") * _rotateSpeed;
             }
 
-            var verticalInput = Input.GetAxis("Mouse Y");
+            float verticalInput = Input.GetAxis("Mouse Y");
             if (verticalInput != 0)
             {
                 _rotX -= verticalInput * _rotateSpeed;
@@ -58,7 +53,7 @@ public class GeoscapeCamera : MonoBehaviour
                 return;
             }
 
-            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
+            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, _rotX);
             Vector3 targetPosition = geoscape.transform.position - rotation * _offset;
 
             transform.position = targetPosition;
