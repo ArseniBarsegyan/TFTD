@@ -53,7 +53,7 @@ public class GeoscapeCamera : MonoBehaviour
                 return;
             }
 
-            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, _rotX);
+            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
             Vector3 targetPosition = geoscape.transform.position - rotation * _offset;
 
             transform.position = targetPosition;
