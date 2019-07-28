@@ -7,6 +7,7 @@ public class TimeController : MonoBehaviour
     private DateTime _currentDate;
     // default time change speed
     private float _currentSpeed = 1.0f;
+    private Material _globeMaterial;
 
     [SerializeField] private Text dateLabel;
     [SerializeField] private Text timeLabel;
@@ -14,29 +15,33 @@ public class TimeController : MonoBehaviour
 
     void Start()
     {
-        _currentDate = DateTime.Parse("01/01/2042 09:00");
+        _currentDate = DateTime.Parse("01/01/2042 15:00");
+        var mater = Resources.Load<Material>("Earth");
+
+        _globeMaterial = globe.GetComponent<Renderer>().material;
+        _globeMaterial = globe.GetComponent<Renderer>().material;
+        _globeMaterial.SetVector("Vector2_41817D62", new Vector2(0.05f, 0));
     }
 
     void Update()
     {
-        float rotationAngle = 0.0f;
         switch (_currentSpeed)
         {
             case 86400f:
-                rotationAngle = 360f;
+                _globeMaterial.SetVector("Vector2_41817D62", new Vector2(0.5f, 0));
                 break;
             case 21600f:
-                rotationAngle = 180f;
+                _globeMaterial.SetVector("Vector2_41817D62", new Vector2(0.1f, 0));
                 break;
             case 3600f:
-                rotationAngle = 15f;
+                _globeMaterial.SetVector("Vector2_41817D62", new Vector2(0.05f, 0));
                 break;
             case 1.0f:
-                rotationAngle = 0.00416666666f;
+                _globeMaterial.SetVector("Vector2_41817D62", new Vector2(0.001f, 0));
                 break;
         }
-        globe.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
-        Camera.main.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
+        //globe.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
+        //Camera.main.transform.RotateAround(Vector3.zero, globe.transform.up, -rotationAngle * Time.deltaTime);
 
         dateLabel.text = _currentDate.ToString("d");
         timeLabel.text = _currentDate.ToString("HH:mm:ss");

@@ -18,17 +18,6 @@ public class GeoscapeCamera : MonoBehaviour
 
     void Update()
     {
-        //transform.RotateAround(geoscape.transform.position, Vector3.up, 45 * Time.deltaTime);
-        //transform.RotateAround(geoscape.transform.position, Vector3.right, 45 * Time.deltaTime);
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                StartCoroutine(MoveCamera(hit.point));
-            }
-        }
     }   
 
     void LateUpdate()
@@ -58,6 +47,15 @@ public class GeoscapeCamera : MonoBehaviour
 
             transform.position = targetPosition;
             transform.LookAt(geoscape.transform);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                StartCoroutine(MoveCamera(hit.point));
+            }
         }
     }
 
