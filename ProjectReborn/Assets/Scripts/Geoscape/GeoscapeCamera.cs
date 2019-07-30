@@ -3,8 +3,14 @@ using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
 {
+    private const string IsNewGame = "IsNewGame";
+    private bool _isNewGame;
+
     private float _rotateSpeed = 4.0f;
     [SerializeField] private GameObject geoscape;
+    [SerializeField] private GameObject baseController;
+
+    private Material _baseMaterial;
 
     private float _rotX;
     private float _rotY;
@@ -13,7 +19,39 @@ public class GeoscapeCamera : MonoBehaviour
 
     void Start()
     {
+        _baseMaterial = Resources.Load("UIHologram", typeof(Material)) as Material;
+        _isNewGame = PlayerPrefs.GetInt(IsNewGame, 0) == 1;
+        if (_isNewGame)
+        {
+            RequestNewBaseLocation();
+        }
+        RequestNewBaseLocation();
         _offset = geoscape.transform.position - transform.position;
+    }
+
+    void RequestNewBaseLocation()
+    {
+        var newBaseController = baseController.GetComponent<NewBaseController>();
+        newBaseController.ShowNewBasePanel();
+
+        if (_isNewGame)
+        {
+            // TODO: error when player try to build base on the land
+            // TODO: await for player select base location
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    var mainBase = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    mainBase.GetComponent<Renderer>().material = _baseMaterial;
+                    mainBase.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    mainBase.transform.position = hit.point;
+                }
+            }
+
+            _isNewGame = false;
+        }
     }
 
     void Update()
