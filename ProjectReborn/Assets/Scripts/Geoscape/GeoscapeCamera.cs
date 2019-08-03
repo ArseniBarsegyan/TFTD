@@ -131,4 +131,34 @@ public class GeoscapeCamera : MonoBehaviour
         yield return new WaitForSeconds(1);
         Destroy(sphere);
     }
+
+    public void SetArcticOceanLocation()
+    {
+        Debug.Log("ArcticOcean");
+    }
+
+    public void SetNorthAtlanticOceanLocation()
+    {
+        Debug.Log("NorthAtlanticOcean");
+    }
+
+    public void SetSouthAtlanticOceanLocation()
+    {
+        Debug.Log("SouthAtlanticOcean");
+    }
+
+    public void SetIndianOceanLocation()
+    {
+        Debug.Log("IndianOcean");
+    }
+
+    public void SetNorthPacificOceanLocation()
+    {
+        Debug.Log("NorthPacificOcean");
+    }
+
+    public void SetSouthPacificOceanLocation()
+    {
+        Debug.Log("SouthPacificOcean");
+    }
 }
