@@ -1,92 +1,70 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
 {
     private const string IsNewGame = "IsNewGame";
     private bool _isNewGame;
+    private NewBaseController _newBaseController;
 
     private float _rotateSpeed = 4.0f;
-    [SerializeField] private GameObject geoscape;
+    [SerializeField] private GameObject globe;
     [SerializeField] private GameObject baseController;
 
     private Material _baseMaterial;
 
-    private float _rotX;
-    private float _rotY;
-    private Vector3 _offset;
     private float _cameraDistance = 5.0f;
 
     void Start()
     {
         _baseMaterial = Resources.Load("UIHologram", typeof(Material)) as Material;
         _isNewGame = PlayerPrefs.GetInt(IsNewGame, 0) == 1;
+        _newBaseController = baseController.GetComponent<NewBaseController>();
         if (_isNewGame)
         {
-            StartCoroutine(RequestNewBaseLocation());
+            _newBaseController.ShowNewBasePanel();
         }
-        _offset = geoscape.transform.position - transform.position;
-    }
-
-    private IEnumerator RequestNewBaseLocation()
-    {
-        var newBaseController = baseController.GetComponent<NewBaseController>();
-        newBaseController.ShowNewBasePanel();
-
-        // TODO: error when player try to build base on the land
-        // TODO: await for player select base location
-
-        yield return new WaitWhile(() => !Input.GetMouseButtonDown(0));
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            var newBase = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            newBase.GetComponent<Renderer>().material = _baseMaterial;
-            newBase.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            newBase.transform.position = hit.point;
-        }
-
-        if (_isNewGame)
-        {
-            _isNewGame = false;
-        }
-        newBaseController.HideNewBasePanel();
-
-        yield return null;
     }
 
     void Update()
     {
-    }   
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            transform.Translate(- Vector3.forward * Time.deltaTime * 5.0f);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                _cameraDistance = Vector3.Distance(transform.position, hit.point);
+            }
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            transform.Translate( Vector3.forward * Time.deltaTime * 5.0f);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                _cameraDistance = Vector3.Distance(transform.position, hit.point);
+            }
+        }
 
-    void LateUpdate()
-    {
         // Rotation and follow the globe
         if (Input.GetMouseButton(0))
         {
             float horInput = Input.GetAxis("Mouse X");
-            if (horInput != 0)
-            {
-                _rotY += Input.GetAxis("Mouse X") * _rotateSpeed;
-            }
-
             float verticalInput = Input.GetAxis("Mouse Y");
-            if (verticalInput != 0)
-            {
-                _rotX -= verticalInput * _rotateSpeed;
-            }
 
             if (verticalInput == 0 && horInput == 0)
             {
                 return;
             }
 
-            Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
-            Vector3 targetPosition = geoscape.transform.position - rotation * _offset;
+            float verticalAngle = - verticalInput * _rotateSpeed;
 
-            transform.position = targetPosition;
-            transform.LookAt(geoscape.transform);
+            transform.RotateAround(Vector3.zero, transform.up, horInput * _rotateSpeed);
+            transform.RotateAround(Vector3.zero, transform.right, verticalAngle);
+
+            transform.LookAt(globe.transform);
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -97,6 +75,10 @@ public class GeoscapeCamera : MonoBehaviour
                 StartCoroutine(MoveCamera(hit.point));
             }
         }
+    }   
+
+    void LateUpdate()
+    {
     }
 
     // Create camera observe point and move move camera to that point smoothly
@@ -104,7 +86,7 @@ public class GeoscapeCamera : MonoBehaviour
     {
         GameObject observePoint = new GameObject();
         observePoint.transform.position = targetPoint;
-        observePoint.transform.LookAt(geoscape.transform);
+        observePoint.transform.LookAt(globe.transform);
         observePoint.transform.position -= observePoint.transform.forward * _cameraDistance;
         Destroy(observePoint);
 
@@ -116,7 +98,7 @@ public class GeoscapeCamera : MonoBehaviour
             t += Time.deltaTime;
             transform.position = Vector3.Lerp(transform.position, observePosition, 
                 Mathf.SmoothStep(0f, 1f, t));
-            transform.LookAt(geoscape.transform);
+            transform.LookAt(globe.transform);
             yield return null;
         }
 
@@ -132,33 +114,27 @@ public class GeoscapeCamera : MonoBehaviour
         Destroy(sphere);
     }
 
-    public void SetArcticOceanLocation()
+    public void SetLocation(string locationName)
     {
-        Debug.Log("ArcticOcean");
+#if DEBUG
+        Debug.Log(locationName);
+#endif
+        var arcticBaseLocation = MissionLocator.XComBasePossibleLocations
+            .FirstOrDefault(x => x.Name == locationName);
+        if (arcticBaseLocation != null)
+        {
+            _newBaseController.HideNewBasePanel();
+            StartCoroutine(CreateXComBase(arcticBaseLocation.Point));
+        }
     }
 
-    public void SetNorthAtlanticOceanLocation()
+    private IEnumerator CreateXComBase(Vector3 baseLocation)
     {
-        Debug.Log("NorthAtlanticOcean");
-    }
-
-    public void SetSouthAtlanticOceanLocation()
-    {
-        Debug.Log("SouthAtlanticOcean");
-    }
-
-    public void SetIndianOceanLocation()
-    {
-        Debug.Log("IndianOcean");
-    }
-
-    public void SetNorthPacificOceanLocation()
-    {
-        Debug.Log("NorthPacificOcean");
-    }
-
-    public void SetSouthPacificOceanLocation()
-    {
-        Debug.Log("SouthPacificOcean");
+        var newBase = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        newBase.GetComponent<Renderer>().material = _baseMaterial;
+        newBase.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        newBase.transform.position = baseLocation;
+        StartCoroutine(MoveCamera(baseLocation));
+        yield return null;
     }
 }
