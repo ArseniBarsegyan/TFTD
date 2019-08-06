@@ -30,6 +30,10 @@ public class GeoscapeCamera : MonoBehaviour
         {
             _newBaseController.ShowNewBasePanel();
         }
+
+        GameObject alienSub = CreateAlienSub(MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point);
+        StartCoroutine(MoveAlienSub(alienSub, MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
+            MissionLocator.AlienBasesPossibleLocations.ElementAt(6).Point));
     }
 
     private IEnumerator ZoomSmoothly(Vector3 globePoint, bool zoomIn)
@@ -165,12 +169,26 @@ public class GeoscapeCamera : MonoBehaviour
     }
     
     // TODO: Later replace with Alien Sub spawn
-    private IEnumerator EmptyObject(Vector3 pos)
+    private GameObject CreateAlienSub(Vector3 pos)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Collider subCollider = sphere.GetComponent<Collider>();
         sphere.transform.position = pos;
-        yield return new WaitForSeconds(1);
-        Destroy(sphere);
+        return sphere;
+    }
+
+    private IEnumerator MoveAlienSub(GameObject alienSub, Vector3 startPoint, Vector3 endPoint)
+    {
+        float angle = Vector3.Angle(startPoint, endPoint);
+
+        float t = 0;
+        while (t < 0.4f)
+        {
+            t += Time.deltaTime;
+            alienSub.transform.RotateAround(Vector3.zero, transform.up, angle * t);
+            yield return null;
+        }
+        yield return null;
     }
 
     public void SetLocation(string locationName)
