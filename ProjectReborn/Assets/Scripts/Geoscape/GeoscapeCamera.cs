@@ -7,7 +7,7 @@ public class GeoscapeCamera : MonoBehaviour
     private const string IsNewGame = "IsNewGame";
     private const float InitialCameraDistance = 5.0f;
     private const float ZoomSpeed = 2.0f;
-    private const float MinCameraDistance = 2.0f;
+    private const float MinCameraDistance = 3.0f;
     private const float MaxCameraDistance = 8.0f;
 
     private bool _isNewGame;
@@ -32,6 +32,43 @@ public class GeoscapeCamera : MonoBehaviour
         }
     }
 
+    private IEnumerator ZoomSmoothly(Vector3 globePoint, bool zoomIn)
+    {
+        var distance = Vector3.Distance(transform.position, globePoint);
+        if (zoomIn)
+        {
+            if (distance > MinCameraDistance)
+            {
+                Vector3 targetDestination = transform.position + transform.forward * ZoomSpeed;
+
+                float t = 0f;
+                while (t < 0.3f)
+                {
+                    t += Time.deltaTime;
+                    transform.position = Vector3.Lerp(transform.position, targetDestination, Mathf.SmoothStep(0f, 0.3f, t));
+                    yield return null;
+                }
+            }
+            _cameraDistance = distance;
+        }
+        else
+        {
+            if (distance < MaxCameraDistance)
+            {
+                Vector3 targetDestination = transform.position - transform.forward * ZoomSpeed;
+
+                float t = 0f;
+                while (t < 0.3f)
+                {
+                    t += Time.deltaTime;
+                    transform.position = Vector3.Lerp(transform.position, targetDestination, Mathf.SmoothStep(0f, 0.3f, t));
+                    yield return null;
+                }
+            }
+            _cameraDistance = distance;
+        }
+    }
+
     void Update()
     {
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -39,16 +76,17 @@ public class GeoscapeCamera : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                var distance = Vector3.Distance(transform.position, hit.point);
-                if (distance < MaxCameraDistance)
-                {
-                    Vector3 targetDestination = transform.position - transform.forward * ZoomSpeed;
-                    StartCoroutine(ZoomSmoothly(targetDestination));
-                    // transform.Translate(-Vector3.forward * Time.deltaTime * ZoomSpeed);
-                }
+                StartCoroutine(ZoomSmoothly(hit.point, false));
+
+                //var distance = Vector3.Distance(transform.position, hit.point);
+                //if (distance < MaxCameraDistance)
+                //{
+                //    Vector3 targetDestination = transform.position - transform.forward * ZoomSpeed;
+                //    transform.Translate(-Vector3.forward * Time.deltaTime * ZoomSpeed);
+                //}
 
                 _rotateSpeed = _initialRotateSpeed * (_cameraDistance / InitialCameraDistance);
-                _cameraDistance = distance;
+               //_cameraDistance = distance;
             }
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -56,15 +94,16 @@ public class GeoscapeCamera : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                var distance = Vector3.Distance(transform.position, hit.point);
-                if (distance > MinCameraDistance)
-                {
-                    Vector3 targetDestination = transform.position + transform.forward * ZoomSpeed;
-                    StartCoroutine(ZoomSmoothly(targetDestination));
-                    //transform.Translate(Vector3.forward * Time.deltaTime * ZoomSpeed);
-                }
+                StartCoroutine(ZoomSmoothly(hit.point, true));
+
+                //var distance = Vector3.Distance(transform.position, hit.point);
+                //if (distance > MinCameraDistance)
+                //{
+                //    Vector3 targetDestination = transform.position + transform.forward * ZoomSpeed;
+                //    transform.Translate(Vector3.forward * Time.deltaTime * ZoomSpeed);
+                //}
                 _rotateSpeed = _initialRotateSpeed * (_cameraDistance / InitialCameraDistance);
-                _cameraDistance = distance;
+                //_cameraDistance = distance;
             }
         }
 
@@ -99,17 +138,6 @@ public class GeoscapeCamera : MonoBehaviour
 
     void LateUpdate()
     {
-    }
-
-    private IEnumerator ZoomSmoothly(Vector3 destination)
-    {
-        float t = 0f;
-        while (t < 0.3f)
-        {
-            t += Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, destination, Mathf.SmoothStep(0f, 0.3f, t));
-            yield return null;
-        }
     }
 
     // Create camera observe point and move move camera to that point smoothly
