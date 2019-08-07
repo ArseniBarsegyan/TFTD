@@ -33,7 +33,7 @@ public class GeoscapeCamera : MonoBehaviour
 
         GameObject alienSub = CreateAlienSub(MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point);
         StartCoroutine(MoveAlienSub(alienSub, MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
-            MissionLocator.AlienBasesPossibleLocations.ElementAt(6).Point));
+            MissionLocator.AlienBasesPossibleLocations.ElementAt(3).Point));
     }
 
     private IEnumerator ZoomSmoothly(Vector3 globePoint, bool zoomIn)
@@ -159,36 +159,37 @@ public class GeoscapeCamera : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, observePosition, 
-                Mathf.SmoothStep(0f, 1f, t));
+            transform.position = Vector3.RotateTowards(transform.position, 
+                observePosition, 
+                Mathf.SmoothStep(0f, 1f, t), 
+                0f);
             transform.LookAt(globe.transform);
             yield return null;
         }
-
-        yield return null;
     }
     
     // TODO: Later replace with Alien Sub spawn
     private GameObject CreateAlienSub(Vector3 pos)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        Collider subCollider = sphere.GetComponent<Collider>();
         sphere.transform.position = pos;
         return sphere;
     }
 
     private IEnumerator MoveAlienSub(GameObject alienSub, Vector3 startPoint, Vector3 endPoint)
     {
-        float angle = Vector3.Angle(startPoint, endPoint);
-
         float t = 0;
-        while (t < 0.4f)
+        
+        while (t < 1f)
         {
-            t += Time.deltaTime;
-            alienSub.transform.RotateAround(Vector3.zero, transform.up, angle * t);
-            yield return null;
+            t += Time.deltaTime * 0.5f;
+            alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
+                endPoint,
+                Mathf.SmoothStep(0f, 1f, t),
+                0f);
+            yield return new WaitForSeconds(0.5f);
         }
-        yield return null;
+        // yield return null;
     }
 
     public void SetLocation(string locationName)
