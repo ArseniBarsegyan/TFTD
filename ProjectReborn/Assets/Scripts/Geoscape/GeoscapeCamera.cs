@@ -31,9 +31,9 @@ public class GeoscapeCamera : MonoBehaviour
             _newBaseController.ShowNewBasePanel();
         }
 
-        GameObject alienSub = CreateAlienSub(MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point);
-        StartCoroutine(MoveAlienSub(alienSub, MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
-            MissionLocator.AlienBasesPossibleLocations.ElementAt(3).Point));
+        //GameObject alienSub = CreateAlienSub(MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point);
+        //StartCoroutine(MoveAlienSub(alienSub, MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
+        //    MissionLocator.AlienBasesPossibleLocations.ElementAt(3).Point));
     }
 
     private IEnumerator ZoomSmoothly(Vector3 globePoint, bool zoomIn)
@@ -71,6 +71,7 @@ public class GeoscapeCamera : MonoBehaviour
             }
             _cameraDistance = distance;
         }
+        yield return null;
     }
 
     void Update()
@@ -81,16 +82,7 @@ public class GeoscapeCamera : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 StartCoroutine(ZoomSmoothly(hit.point, false));
-
-                //var distance = Vector3.Distance(transform.position, hit.point);
-                //if (distance < MaxCameraDistance)
-                //{
-                //    Vector3 targetDestination = transform.position - transform.forward * ZoomSpeed;
-                //    transform.Translate(-Vector3.forward * Time.deltaTime * ZoomSpeed);
-                //}
-
                 _rotateSpeed = _initialRotateSpeed * (_cameraDistance / InitialCameraDistance);
-               //_cameraDistance = distance;
             }
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -99,15 +91,7 @@ public class GeoscapeCamera : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 StartCoroutine(ZoomSmoothly(hit.point, true));
-
-                //var distance = Vector3.Distance(transform.position, hit.point);
-                //if (distance > MinCameraDistance)
-                //{
-                //    Vector3 targetDestination = transform.position + transform.forward * ZoomSpeed;
-                //    transform.Translate(Vector3.forward * Time.deltaTime * ZoomSpeed);
-                //}
                 _rotateSpeed = _initialRotateSpeed * (_cameraDistance / InitialCameraDistance);
-                //_cameraDistance = distance;
             }
         }
 
@@ -130,6 +114,7 @@ public class GeoscapeCamera : MonoBehaviour
             transform.LookAt(globe.transform);
         }
 
+        // Rotate to camera to selected point
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -159,44 +144,47 @@ public class GeoscapeCamera : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime;
-            transform.position = Vector3.RotateTowards(transform.position, 
-                observePosition, 
-                Mathf.SmoothStep(0f, 1f, t), 
+            transform.position = Vector3.RotateTowards(transform.position,
+                observePosition,
+                Mathf.SmoothStep(0f, 1f, t),
                 0f);
             transform.LookAt(globe.transform);
             yield return null;
         }
+        yield return null;
     }
     
     // TODO: Later replace with Alien Sub spawn
     private GameObject CreateAlienSub(Vector3 pos)
     {
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         sphere.transform.position = pos;
         return sphere;
     }
 
     private IEnumerator MoveAlienSub(GameObject alienSub, Vector3 startPoint, Vector3 endPoint)
     {
-        float t = 0;
-        
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 0.5f;
-            alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
-                endPoint,
-                Mathf.SmoothStep(0f, 1f, t),
-                0f);
-            yield return new WaitForSeconds(0.5f);
-        }
-        // yield return null;
+        //float t = 0;
+
+        //while (t < 1f)
+        //{
+        //    t += Time.deltaTime * 0.5f;
+        //    alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
+        //        endPoint,
+        //        Mathf.SmoothStep(0f, 1f, t),
+        //        0f);
+        //    yield return new WaitForSeconds(0.5f);
+        //}
+        alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
+            endPoint,
+            0f,
+            0f);
+        yield return null;
     }
 
     public void SetLocation(string locationName)
     {
-#if DEBUG
-        Debug.Log(locationName);
-#endif
         var arcticBaseLocation = MissionLocator.XComBasePossibleLocations
             .FirstOrDefault(x => x.Name == locationName);
         if (arcticBaseLocation != null)
