@@ -10,6 +10,7 @@ public class GeoscapeCamera : MonoBehaviour
     private const float MinCameraDistance = 3.0f;
     private const float MaxCameraDistance = 8.0f;
 
+    private bool _isMoving;
     private bool _isNewGame;
     private NewBaseController _newBaseController;
     private float _initialRotateSpeed = 4.0f;
@@ -115,8 +116,9 @@ public class GeoscapeCamera : MonoBehaviour
         }
 
         // Rotate to camera to selected point
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonUp(1) && !_isMoving)
         {
+            _isMoving = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -151,6 +153,8 @@ public class GeoscapeCamera : MonoBehaviour
             transform.LookAt(globe.transform);
             yield return null;
         }
+
+        _isMoving = false;
         yield return null;
     }
     
