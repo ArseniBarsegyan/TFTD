@@ -101,15 +101,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4728961134380075661}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b96afa02ef718f94bb4df85a8619798e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7228b79a8f6f2344687020f42966c955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SubType: 0
-  SubStatus: 0
+  SubStatus: 1
   Race: 0
   Weapon: 0
   StartSpeed: 1
   Speed: 1
   Health: 100
-  startPoint: {x: 3.4, y: -2.1, z: -3.1}
-  endPoint: {x: -2.4, y: 2.7, z: -3.4}
+  startPoint: {x: 0, y: 0, z: 0}
+  endPoint: {x: 0, y: 0, z: 0}

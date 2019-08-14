@@ -8,14 +8,15 @@ public class AlienSub : MonoBehaviour
     public AlienSubWeapon Weapon;
     public float StartSpeed = 1.0f;
     public float Speed;
-    public int Health;
-    public Vector3 startPoint;
-    public Vector3 endPoint;
+    public int Health = 100;
+    public Vector3 StartPoint;
+    public Vector3 DestinationPoint;
 
     void Start()
     {
-        transform.position = startPoint;
+        transform.position = StartPoint;
         transform.LookAt(Vector3.zero);
+        Speed = StartSpeed;
     }
 
     void Update()
@@ -39,7 +40,7 @@ public class AlienSub : MonoBehaviour
         if (SubStatus == AlienSubStatus.Moving)
         {
             transform.position = Vector3.RotateTowards(transform.position,
-                endPoint,
+                DestinationPoint,
                 Time.deltaTime * Speed * 0.01f,
                 0f);
             transform.LookAt(Vector3.zero);

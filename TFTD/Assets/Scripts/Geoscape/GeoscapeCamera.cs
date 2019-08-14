@@ -175,7 +175,7 @@ public class GeoscapeCamera : MonoBehaviour
         //{
         //    t += Time.deltaTime * 0.5f;
         //    alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
-        //        endPoint,
+        //        DestinationPoint,
         //        Mathf.SmoothStep(0f, 1f, t),
         //        0f);
         //    yield return new WaitForSeconds(0.5f);

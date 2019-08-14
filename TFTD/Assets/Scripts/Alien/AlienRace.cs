@@ -1,6 +1,6 @@
 ﻿public enum AlienRace
 {
-    Aqauatoid,
+    Aquatoid,
     Gillman,
     Lobsterman,
     Tasoth,
