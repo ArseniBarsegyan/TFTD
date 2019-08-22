@@ -9,23 +9,20 @@ public class AlienSubController : MonoBehaviour
 
     void Awake()
     {
-        MessagingCenter.Subscribe<TimeController, AlienSubDto>(this, 
-            GameEvent.AlienSubSpawn, 
-            (controller, dto) =>
-        {
-            CreateSub(dto);
-        });
+        MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
+        (this, GameEvent.AlienSubSpawn, 
+            (controller, dto) => 
+            {
+                CreateSub(dto);
+            });
     }
 
     void Destroy()
     {
-        MessagingCenter.Unsubscribe<TimeController, AlienSubDto>(this, GameEvent.AlienSubSpawn);
+        MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this, 
+            GameEvent.AlienSubSpawn);
     }
-
-    void Update()
-    {
-    }
-
+    
     private void CreateSub(AlienSubDto dto)
     {
         var obj = Instantiate(alienSubPrefab) as GameObject;

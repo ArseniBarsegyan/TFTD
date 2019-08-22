@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Assets.Scripts.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TimeController : MonoBehaviour
 {
-    private DateTime _gameStartTime;
-    private DateTime _currentDate;
-
-    private bool _isCodeExecuted;
     // default time change speed
     private float _currentSpeed = 1.0f;
-
-    private DateTime _lastAlienSubSpawnTime;
 
     private Material _globeMaterial;
     private bool _timeChanged;
@@ -21,12 +13,12 @@ public class TimeController : MonoBehaviour
     [SerializeField] private Text dateLabel;
     [SerializeField] private Text timeLabel;
     [SerializeField] private GameObject globe;
-    [SerializeField] private GameObject alienSubController;
-    
+
+    public DateTime CurrentDate { get; private set; }
+
     void Start()
     {
-        _gameStartTime = DateTime.Parse("01/01/2042 15:00");
-        _currentDate = DateTime.Parse("01/01/2042 15:00");
+        CurrentDate = DateTime.Parse("01/01/2042 15:00");
         _globeMaterial = globe.GetComponent<Renderer>().material;
     }
 
@@ -55,27 +47,10 @@ public class TimeController : MonoBehaviour
             _timeChanged = false;
         }
 
-        dateLabel.text = _currentDate.ToString("d");
-        timeLabel.text = _currentDate.ToString("HH:mm:ss");
-
-        if (_currentDate.Hour == 19 && !_isCodeExecuted)
-        {
-            _isCodeExecuted = true;
-            _lastAlienSubSpawnTime = _currentDate;
-            var dtoModel = new AlienSubDto
-            {
-                StartPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
-                DestinationPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(2).Point,
-                Race = AlienRace.Tasoth,
-                Speed = 1.0f,
-                Weapon = AlienSubWeapon.HeavyPlasma,
-                SubType = AlienSubType.Battleship,
-                Status = AlienSubStatus.Moving
-            };
-            MessagingCenter.Instance.Send(this, GameEvent.AlienSubSpawn, dtoModel);
-        }
-
-        _currentDate = _currentDate.AddSeconds(Time.deltaTime * _currentSpeed);
+        dateLabel.text = CurrentDate.ToString("d");
+        timeLabel.text = CurrentDate.ToString("HH:mm:ss");
+        
+        CurrentDate = CurrentDate.AddSeconds(Time.deltaTime * _currentSpeed);
     }
 
     public void SetToSeconds()
