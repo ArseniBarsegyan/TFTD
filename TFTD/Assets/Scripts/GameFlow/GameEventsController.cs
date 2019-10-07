@@ -19,6 +19,7 @@ public class GameEventsController : MonoBehaviour
     void Start()
     {
         _gameStartTime = DateTime.Parse("01/01/2042 15:00");
+        SpawnAlienSub();
     }
 
     void Update()
