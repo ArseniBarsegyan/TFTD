@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Assets.Scripts.Messaging;
 using UnityEngine;
@@ -16,16 +17,26 @@ public class GameEventsController : MonoBehaviour
 
     [SerializeField] private GameObject timeController;
 
+    private bool _subSpawned;
+
     void Start()
     {
         _gameStartTime = DateTime.Parse("01/01/2042 15:00");
-        SpawnAlienSub();
     }
 
     void Update()
     {
+        DateTime currentDate = timeController.GetComponent<TimeController>().CurrentDate;
+
+        var stringDate = currentDate.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+        if (stringDate == "01/01/2042 15:45" && !_subSpawned)
+        {
+            SpawnAlienSub();
+            _subSpawned = true;
+        }
     }
 
+    // TODO: spawned sub characteristics should depend on current time and tech level.
     public void SpawnAlienSub()
     {
         _lastAlienSubSpawnTime = timeController.GetComponent<TimeController>().CurrentDate;

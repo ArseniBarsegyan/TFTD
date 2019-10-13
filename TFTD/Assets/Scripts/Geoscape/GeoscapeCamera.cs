@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using Assets.Scripts.Messaging;
 using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
@@ -21,6 +22,22 @@ public class GeoscapeCamera : MonoBehaviour
 
     [SerializeField] private GameObject globe;
     [SerializeField] private GameObject baseController;
+
+    void Awake()
+    {
+        MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
+        (this, GameEvent.AlienSubSpawn,
+            (controller, dto) =>
+            {
+                StartCoroutine(MoveCamera(dto.StartPoint));
+            });
+    }
+
+    void Destroy()
+    {
+        MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
+            GameEvent.AlienSubSpawn);
+    }
 
     void Start()
     {

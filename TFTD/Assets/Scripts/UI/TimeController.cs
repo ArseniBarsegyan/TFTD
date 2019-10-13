@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,22 @@ public class TimeController : MonoBehaviour
     [SerializeField] private GameObject globe;
 
     public DateTime CurrentDate { get; private set; }
+
+    void Awake()
+    {
+        MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
+        (this, GameEvent.AlienSubSpawn,
+            (controller, dto) =>
+            {
+                SetToSeconds();
+            });
+    }
+
+    void Destroy()
+    {
+        MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
+            GameEvent.AlienSubSpawn);
+    }
 
     void Start()
     {
