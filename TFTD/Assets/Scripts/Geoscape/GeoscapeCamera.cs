@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using Assets.Scripts.Messaging;
 using UnityEngine;
 
@@ -31,12 +30,20 @@ public class GeoscapeCamera : MonoBehaviour
             {
                 StartCoroutine(MoveCamera(dto.StartPoint));
             });
+        MessagingCenter.Subscribe<GameEventsController, GeoPosition>
+            (this, GameEvent.XComBaseCreated,
+            (controller, geoPosition) =>
+            {
+                SetLocation(geoPosition);
+            });
     }
 
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
             GameEvent.AlienSubSpawn);
+        MessagingCenter.Unsubscribe<GameEventsController, GeoPosition>(this,
+            GameEvent.XComBaseCreated);
     }
 
     void Start()
@@ -48,10 +55,6 @@ public class GeoscapeCamera : MonoBehaviour
         {
             _newBaseController.ShowNewBasePanel();
         }
-
-        //GameObject alienSub = CreateAlienSub(MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point);
-        //StartCoroutine(MoveAlienSub(alienSub, MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
-        //    MissionLocator.AlienBasesPossibleLocations.ElementAt(3).Point));
     }
 
     private IEnumerator ZoomSmoothly(Vector3 globePoint, bool zoomIn)
@@ -142,13 +145,9 @@ public class GeoscapeCamera : MonoBehaviour
                 StartCoroutine(MoveCamera(hit.point));
             }
         }
-    }   
-
-    void LateUpdate()
-    {
     }
 
-    // Create camera observe point and move move camera to that point smoothly
+    // Create camera observe point and move camera to that point smoothly
     private IEnumerator MoveCamera(Vector3 targetPoint)
     {
         GameObject observePoint = new GameObject();
@@ -174,45 +173,11 @@ public class GeoscapeCamera : MonoBehaviour
         _isMoving = false;
         yield return null;
     }
-    
-    // TODO: Later replace with Alien Sub spawn
-    private GameObject CreateAlienSub(Vector3 pos)
-    {
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        sphere.transform.position = pos;
-        return sphere;
-    }
 
-    private IEnumerator MoveAlienSub(GameObject alienSub, Vector3 startPoint, Vector3 endPoint)
+    public void SetLocation(GeoPosition geoPosition)
     {
-        //float t = 0;
-
-        //while (t < 1f)
-        //{
-        //    t += Time.deltaTime * 0.5f;
-        //    alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
-        //        DestinationPoint,
-        //        Mathf.SmoothStep(0f, 1f, t),
-        //        0f);
-        //    yield return new WaitForSeconds(0.5f);
-        //}
-        alienSub.transform.position = Vector3.RotateTowards(alienSub.transform.position,
-            endPoint,
-            0f,
-            0f);
-        yield return null;
-    }
-
-    public void SetLocation(string locationName)
-    {
-        var arcticBaseLocation = MissionLocator.XComBasePossibleLocations
-            .FirstOrDefault(x => x.Name == locationName);
-        if (arcticBaseLocation != null)
-        {
-            _newBaseController.HideNewBasePanel();
-            StartCoroutine(CreateXComBase(arcticBaseLocation.Point));
-        }
+        _newBaseController.HideNewBasePanel();
+        StartCoroutine(CreateXComBase(geoPosition.Point));
     }
 
     private IEnumerator CreateXComBase(Vector3 baseLocation)

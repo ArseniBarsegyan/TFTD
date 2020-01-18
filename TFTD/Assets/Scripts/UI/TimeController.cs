@@ -23,7 +23,13 @@ public class TimeController : MonoBehaviour
         (this, GameEvent.AlienSubSpawn,
             (controller, dto) =>
             {
-                SetToSeconds();
+                SetCurrentTimeSpeedToSeconds();
+            });
+        MessagingCenter.Subscribe<GameEventsController, GeoPosition>
+        (this, GameEvent.XComBaseCreated,
+            (controller, position) =>
+            {
+                SetCurrentTimeSpeedToSeconds();
             });
     }
 
@@ -31,13 +37,21 @@ public class TimeController : MonoBehaviour
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
             GameEvent.AlienSubSpawn);
+        MessagingCenter.Unsubscribe<GameEventsController>(this,
+            GameEvent.XComBaseCreated);
     }
 
     void Start()
     {
         CurrentDate = DateTime.Parse("01/01/2042 15:00");
         _globeMaterial = globe.GetComponent<Renderer>().material;
+        StopTime();
     }
+
+    private const float OneHourSpeed = 3600f;
+    private const float SixHoursSpeed = 21600f;
+    private const float OneDaySpeed = 86400f;
+    private const float OneSecondSpeed = 1f;
 
     void Update()
     {
@@ -47,16 +61,19 @@ public class TimeController : MonoBehaviour
 
             switch (_currentSpeed)
             {
-                case 86400f:
+                case 0:
+                    shadowSpeed = 0f;
+                    break;
+                case OneDaySpeed:
                     shadowSpeed = 0.5f;
                     break;
-                case 21600f:
+                case SixHoursSpeed:
                     shadowSpeed = 0.1f;
                     break;
-                case 3600f:
+                case OneHourSpeed:
                     shadowSpeed = 0.05f;
                     break;
-                case 1.0f:
+                case OneSecondSpeed:
                     shadowSpeed = 0.001f;
                     break;
             }
@@ -70,25 +87,31 @@ public class TimeController : MonoBehaviour
         CurrentDate = CurrentDate.AddSeconds(Time.deltaTime * _currentSpeed);
     }
 
-    public void SetToSeconds()
+    public void StopTime()
+    {
+        _currentSpeed = 0f;
+        _timeChanged = true;
+    }
+
+    public void SetCurrentTimeSpeedToSeconds()
     {
         _currentSpeed = 1.0f;
         _timeChanged = true;
     }
 
-    public void SetToHours()
+    public void SetCurrentTimeSpeedToHours()
     {
         _currentSpeed = 3600.0f;
         _timeChanged = true;
     }
 
-    public void SetToHalfDay()
+    public void SetCurrentTimeSpeedToHalfDay()
     {
         _currentSpeed = 21600.0f;
         _timeChanged = true;
     }
 
-    public void SetToDay()
+    public void SetCurrentTimeSpeedToDay()
     {
         _currentSpeed = 86400.0f;
         _timeChanged = true;

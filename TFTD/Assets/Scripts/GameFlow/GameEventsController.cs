@@ -52,4 +52,14 @@ public class GameEventsController : MonoBehaviour
         };
         MessagingCenter.Instance.Send(this, GameEvent.AlienSubSpawn, dtoModel);
     }
+
+    public void XComBaseCreated(string locationName)
+    {
+        var arcticBaseLocation = MissionLocator.XComBasePossibleLocations
+           .FirstOrDefault(x => x.Name == locationName);
+        if (arcticBaseLocation != null)
+        {
+            MessagingCenter.Send(this, GameEvent.XComBaseCreated, arcticBaseLocation);
+        }
+    }
 }

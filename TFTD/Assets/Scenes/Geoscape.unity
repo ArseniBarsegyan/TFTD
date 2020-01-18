@@ -203,7 +203,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1435466345}
-        m_MethodName: SetToDay
+        m_MethodName: SetCurrentTimeSpeedToDay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -485,8 +485,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -758,7 +758,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1435466345}
-        m_MethodName: SetToSeconds
+        m_MethodName: SetCurrentTimeSpeedToSeconds
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1086,8 +1086,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1492,7 +1492,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1435466345}
-        m_MethodName: SetToHours
+        m_MethodName: SetCurrentTimeSpeedToHours
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1621,7 +1621,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1435466345}
-        m_MethodName: SetToHalfDay
+        m_MethodName: SetCurrentTimeSpeedToHalfDay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1749,8 +1749,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2066,8 +2066,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2877,8 +2877,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3282,8 +3282,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1080424039}
-        m_MethodName: SetLocation
+      - m_Target: {fileID: 1557727544}
+        m_MethodName: XComBaseCreated
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
