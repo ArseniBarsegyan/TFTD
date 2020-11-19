@@ -10,6 +10,7 @@ public class DifficultyMenu : MonoBehaviour
 
         // Start new game after select difficulty
         Managers.Mission.StartNewGame();
+        Managers.Audio.PlayGeoscapeMusic();
     }
 
     public void BackToMain()
