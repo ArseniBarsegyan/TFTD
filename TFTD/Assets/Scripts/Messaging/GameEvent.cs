@@ -1,5 +1,6 @@
 ﻿public static class GameEvent
 {
-    public const string AlienSubSpawn = "AlienSubSpawn";
-    public const string XComBaseCreated = "XComBaseCreated";
+    public const string AlienSubSpawn = nameof(AlienSubSpawn);
+    public const string AlienTargetClicked = nameof(AlienTargetClicked);
+    public const string XComBaseCreated = nameof(XComBaseCreated);
 }

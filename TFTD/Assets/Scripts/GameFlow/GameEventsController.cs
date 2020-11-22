@@ -42,6 +42,7 @@ public class GameEventsController : MonoBehaviour
         _lastAlienSubSpawnTime = timeController.GetComponent<TimeController>().CurrentDate;
         var dtoModel = new AlienSubDto
         {
+            Id = Guid.NewGuid(),
             StartPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
             DestinationPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(2).Point,
             Race = AlienRace.Tasoth,

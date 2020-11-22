@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Messaging;
 using UnityEngine;
 
@@ -28,13 +29,20 @@ public class GeoscapeCamera : MonoBehaviour
         (this, GameEvent.AlienSubSpawn,
             (controller, dto) =>
             {
-                StartCoroutine(MoveCamera(dto.StartPoint));
+                StartCoroutine(MoveCameraOverPoint(dto.StartPoint));
             });
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
             (this, GameEvent.XComBaseCreated,
             (controller, geoPosition) =>
             {
                 SetLocation(geoPosition);
+            });
+        MessagingCenter.Subscribe<ClickableAlienTarget, Guid>
+            (this, GameEvent.AlienTargetClicked,
+            (target, id) =>
+            {
+                var alienSub = AlienSubsController.GetAlienSubById(id);
+                StartCoroutine(MoveCameraOverPoint(alienSub.transform.position));
             });
     }
 
@@ -44,6 +52,8 @@ public class GeoscapeCamera : MonoBehaviour
             GameEvent.AlienSubSpawn);
         MessagingCenter.Unsubscribe<GameEventsController, GeoPosition>(this,
             GameEvent.XComBaseCreated);
+        MessagingCenter.Unsubscribe<ClickableAlienTarget, AlienSubDto>(this,
+            GameEvent.AlienTargetClicked);
     }
 
     void Start()
@@ -142,13 +152,13 @@ public class GeoscapeCamera : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                StartCoroutine(MoveCamera(hit.point));
+                StartCoroutine(MoveCameraOverPoint(hit.point));
             }
         }
     }
 
     // Create camera observe point and move camera to that point smoothly
-    private IEnumerator MoveCamera(Vector3 targetPoint)
+    private IEnumerator MoveCameraOverPoint(Vector3 targetPoint)
     {
         GameObject observePoint = new GameObject();
         observePoint.transform.position = targetPoint;
@@ -186,7 +196,7 @@ public class GeoscapeCamera : MonoBehaviour
         newBase.GetComponent<Renderer>().material = _baseMaterial;
         newBase.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         newBase.transform.position = baseLocation;
-        StartCoroutine(MoveCamera(baseLocation));
+        StartCoroutine(MoveCameraOverPoint(baseLocation));
         yield return null;
     }
 }

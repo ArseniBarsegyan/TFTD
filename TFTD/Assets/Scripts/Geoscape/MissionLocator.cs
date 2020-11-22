@@ -76,15 +76,15 @@ public class MissionLocator : MonoBehaviour
 
     void Start()
     {
-        _alienUnitsMaterial = Resources.Load("AlienSubMaterial", typeof(Material)) as Material;
+        //_alienUnitsMaterial = Resources.Load("AlienSubMaterial", typeof(Material)) as Material;
         
-        foreach (var position in XComBasePossibleLocations)
-        {
-            var alienSpawn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            alienSpawn.GetComponent<Renderer>().material = _alienUnitsMaterial;
-            alienSpawn.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            alienSpawn.transform.position = position.Point;
-        }
+        //foreach (var position in XComBasePossibleLocations)
+        //{
+        //    var alienSpawn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //    alienSpawn.GetComponent<Renderer>().material = _alienUnitsMaterial;
+        //    alienSpawn.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        //    alienSpawn.transform.position = position.Point;
+        //}
     }
 
     void Update()

@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public struct AlienSubDto
 {
+    public Guid Id { get; set; }
     public Vector3 StartPoint { get; set; }
     public Vector3 DestinationPoint { get; set; }
     public AlienRace Race { get; set; }

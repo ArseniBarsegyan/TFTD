@@ -35,6 +35,15 @@ public class AlienTargetsListController : MonoBehaviour
         {
             alienSubListItem.transform.position = alienTargetsPanel.transform.position;
             alienSubListItem.transform.SetParent(alienTargetsPanel.transform, true);
+            var clickableAlienTarget = alienSubListItem.GetComponent<ClickableAlienTarget>();
+            if (clickableAlienTarget != null)
+            {
+                clickableAlienTarget.AlienSubDto = dto;
+            }
+            else
+            {
+                Debug.Log("ClickableAlienTarget component is null");
+            }
         }
     }
 }

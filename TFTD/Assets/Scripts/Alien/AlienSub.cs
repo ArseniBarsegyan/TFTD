@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class AlienSub : MonoBehaviour
 {
+    public Guid Id;
     public AlienSubType SubType;
     public AlienSubStatus SubStatus;
     public AlienRace Race;

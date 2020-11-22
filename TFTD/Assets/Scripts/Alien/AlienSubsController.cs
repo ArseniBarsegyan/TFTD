@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Messaging;
 using UnityEngine;
 
-public class AlienSubController : MonoBehaviour
+public class AlienSubsController : MonoBehaviour
 {
     [SerializeField] private GameObject alienSubPrefab;
-    private List<GameObject> _alienSubList = new List<GameObject>();
+    public static List<GameObject> AlienSubList = new List<GameObject>();
 
     void Awake()
     {
@@ -22,11 +23,24 @@ public class AlienSubController : MonoBehaviour
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this, 
             GameEvent.AlienSubSpawn);
     }
+
+    public static GameObject GetAlienSubById(Guid id)
+    {
+        foreach(var obj in AlienSubList)
+        {
+            var alienSub = obj.GetComponent<AlienSub>();
+
+            if (alienSub.Id == id)
+                return obj;
+        }
+        return null;
+    }
     
     private void CreateSub(AlienSubDto dto)
     {
         var obj = Instantiate(alienSubPrefab) as GameObject;
         var alienSub = obj.GetComponent<AlienSub>();
+        alienSub.Id = dto.Id;
         alienSub.Health = dto.Health;
         alienSub.Race = dto.Race;
         alienSub.SubType = dto.SubType;
@@ -36,6 +50,6 @@ public class AlienSubController : MonoBehaviour
         alienSub.StartPoint = dto.StartPoint;
         alienSub.DestinationPoint = dto.DestinationPoint;
 
-        _alienSubList.Add(obj);
+        AlienSubList.Add(obj);
     }
 }
