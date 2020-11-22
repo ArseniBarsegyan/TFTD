@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public struct AlienSubDto
+public class AlienSubDto
 {
     public Guid Id { get; set; }
     public Vector3 StartPoint { get; set; }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class AlienSubsController : MonoBehaviour
 {
     [SerializeField] private GameObject alienSubPrefab;
-    public static List<GameObject> AlienSubList = new List<GameObject>();
+    private static List<GameObject> AlienSubList = new List<GameObject>();
 
     void Awake()
     {
@@ -38,7 +38,7 @@ public class AlienSubsController : MonoBehaviour
     
     private void CreateSub(AlienSubDto dto)
     {
-        var obj = Instantiate(alienSubPrefab) as GameObject;
+        GameObject obj = Instantiate(alienSubPrefab);
         var alienSub = obj.GetComponent<AlienSub>();
         alienSub.Id = dto.Id;
         alienSub.Health = dto.Health;

@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Interceptor : MonoBehaviour
 {
+    public Guid Id;
     public InterceptorType InterceptorType;
     public InterceptorWeapon InterceptorWeapon;
     public InterceptorStatus InterceptorStatus;
@@ -14,8 +16,11 @@ public class Interceptor : MonoBehaviour
 
     void Start()
     {
+        transform.position = StartPoint;
+        transform.LookAt(Vector3.zero);
+        Speed = StartSpeed;
     }
-    
+
     void Update()
     {
         if (InterceptorStatus == InterceptorStatus.Repairing

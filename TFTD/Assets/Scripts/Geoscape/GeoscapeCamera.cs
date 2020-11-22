@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
 {
-    private const string IsNewGame = "IsNewGame";
+    private const string IsNewGame = nameof(IsNewGame);
     private const float InitialCameraDistance = 5.0f;
     private const float ZoomSpeed = 2.0f;
     private const float MinCameraDistance = 3.0f;
@@ -17,7 +17,6 @@ public class GeoscapeCamera : MonoBehaviour
     private float _initialRotateSpeed = 4.0f;
     // Rotate speed change with zoom.
     private float _rotateSpeed = 4.0f;
-    private Material _baseMaterial;
     private float _cameraDistance = 5.0f;
 
     [SerializeField] private GameObject globe;
@@ -58,7 +57,6 @@ public class GeoscapeCamera : MonoBehaviour
 
     void Start()
     {
-        _baseMaterial = Resources.Load("UIHologram", typeof(Material)) as Material;
         _isNewGame = PlayerPrefs.GetInt(IsNewGame, 0) == 1;
         _newBaseController = baseController.GetComponent<NewBaseController>();
         if (_isNewGame)
@@ -187,16 +185,6 @@ public class GeoscapeCamera : MonoBehaviour
     public void SetLocation(GeoPosition geoPosition)
     {
         _newBaseController.HideNewBasePanel();
-        StartCoroutine(CreateXComBase(geoPosition.Point));
-    }
-
-    private IEnumerator CreateXComBase(Vector3 baseLocation)
-    {
-        var newBase = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        newBase.GetComponent<Renderer>().material = _baseMaterial;
-        newBase.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        newBase.transform.position = baseLocation;
-        StartCoroutine(MoveCameraOverPoint(baseLocation));
-        yield return null;
+        StartCoroutine(MoveCameraOverPoint(geoPosition.Point));
     }
 }
