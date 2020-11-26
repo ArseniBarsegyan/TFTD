@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class XComBasesController : MonoBehaviour
 {
     [SerializeField] private GameObject xComBasePrefab;
     private static List<XComBaseDto> _xComBases = new List<XComBaseDto>();
+
+    public XComBaseDto GetXComBase()
+    {
+        return _xComBases.FirstOrDefault();
+    }
 
     public void CreateXComBase(GeoPosition position)
     {

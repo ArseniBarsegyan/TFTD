@@ -74,6 +74,7 @@ public class Interceptor : MonoBehaviour
                 DestinationPoint,
                 Time.deltaTime * Speed * 0.01f,
                 0f);
+
         transform.LookAt(Vector3.zero);
     }
 }

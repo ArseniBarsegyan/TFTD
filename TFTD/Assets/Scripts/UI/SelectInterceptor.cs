@@ -109,7 +109,7 @@ public class SelectInterceptor : MonoBehaviour
             SpaceCraftId = id,
             TargetId = alienTargetId
         };
-        MessagingCenter.Send(this, GameEvent.InterceptorSelected, dto);
+        MessagingCenter.Send(this, GameEvent.InterceptorSelectConfirmed, dto);
         HideInterceptionPanel();
     }
 
