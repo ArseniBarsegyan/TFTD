@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Messaging;
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;

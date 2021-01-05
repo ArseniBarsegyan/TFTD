@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Assets.Scripts.Messaging;
+using System;
 using UnityEngine;
 
 public class Interceptor : MonoBehaviour
 {
+    private const float FightEnterDistance = 0.05f;
+
     public Guid Id;
     public InterceptorType InterceptorType;
     public InterceptorWeapon InterceptorWeapon;
     public InterceptorStatus InterceptorStatus;
-    public float StartSpeed = 2.0f;
+    public float StartSpeed = 5.0f;
     public float Speed;
     public int Health = 100;
     public Vector3 StartPoint;
     public Vector3 DestinationPoint;
     public GameObject alienTarget;
+
+    private bool _wasEngageAsked;
 
     void Start()
     {
@@ -64,8 +69,25 @@ public class Interceptor : MonoBehaviour
                 0f);
 
                 transform.LookAt(Vector3.zero);
+
+                TryEngageAlienSub(alienSub);
             }
         }
+    }
+
+    private void TryEngageAlienSub(AlienSub alienSub)
+    {
+        if (_wasEngageAsked)
+            return;
+
+        float distance = Vector3.Distance(transform.position, alienSub.transform.position);
+
+        if (distance > FightEnterDistance)
+            return;
+
+        MessagingCenter.Send(this, GameEvent.EngageConfirmed, Id);
+
+        _wasEngageAsked = true;
     }
 
     private void MoveToSelectedGlobePosition()
