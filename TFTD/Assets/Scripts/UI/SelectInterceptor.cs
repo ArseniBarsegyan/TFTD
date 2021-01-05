@@ -49,7 +49,7 @@ public class SelectInterceptor : MonoBehaviour
             if (interceptorListItem != null)
             {
                 DrawListItem(interceptorListItem, i);
-                SetListItemText(interceptorListItem, $"Interceptor {i + 1}");
+                SetListItemText(interceptorListItem, allInterceptors[i].Name);
                 SetupListItemSelectableInterceptorComponent(interceptorListItem, allInterceptors[i].Id);
             }
         }

@@ -34,7 +34,7 @@ public class GeoscapeCamera : MonoBehaviour
             (this, GameEvent.XComBaseCreated,
             (controller, geoPosition) =>
             {
-                SetLocation(geoPosition);
+                SetXComBaseLocation(geoPosition);
             });
         MessagingCenter.Subscribe<ClickableAlienTarget, Guid>
             (this, GameEvent.AlienTargetClicked,
@@ -182,7 +182,7 @@ public class GeoscapeCamera : MonoBehaviour
         yield return null;
     }
 
-    public void SetLocation(GeoPosition geoPosition)
+    public void SetXComBaseLocation(GeoPosition geoPosition)
     {
         _newBaseController.HideNewBasePanel();
         StartCoroutine(MoveCameraOverPoint(geoPosition.Point));

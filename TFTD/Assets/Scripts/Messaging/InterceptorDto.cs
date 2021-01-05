@@ -4,6 +4,7 @@ using UnityEngine;
 public class InterceptorDto
 {
     public Guid Id { get; set; }
+    public string Name { get; set; }
     public Vector3 StartPoint { get; set; }
     public InterceptorType InterceptorType { get; set; }
     public float Speed { get; set; }

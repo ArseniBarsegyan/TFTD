@@ -5,5 +5,8 @@
     public const string XComBaseCreated = nameof(XComBaseCreated);
     public const string InterceptorSelectConfirmed = nameof(InterceptorSelectConfirmed);
     public const string InterceptorListItemSelected = nameof(InterceptorListItemSelected);
-    public const string EngageConfirmed = nameof(EngageConfirmed);
+    public const string InterceptorEngageRequest = nameof(InterceptorEngageRequest);
+    public const string InterceptorEngageRequestConfirmed = nameof(InterceptorEngageRequestConfirmed);
+    public const string InterceptorEngageContinuePursuit = nameof(InterceptorEngageContinuePursuit);
+    public const string InterceptorEngageReturnToBase = nameof(InterceptorEngageReturnToBase);
 }

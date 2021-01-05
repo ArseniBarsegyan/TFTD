@@ -109,7 +109,7 @@ MonoBehaviour:
   InterceptorType: 0
   InterceptorWeapon: 0
   InterceptorStatus: 0
-  StartSpeed: 2
+  StartSpeed: 5
   Speed: 0
   Health: 100
   StartPoint: {x: 0, y: 0, z: 0}

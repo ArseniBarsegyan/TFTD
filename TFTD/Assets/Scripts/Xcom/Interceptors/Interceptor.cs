@@ -6,6 +6,7 @@ public class Interceptor : MonoBehaviour
 {
     private const float FightEnterDistance = 0.05f;
 
+    public string Name;
     public Guid Id;
     public InterceptorType InterceptorType;
     public InterceptorWeapon InterceptorWeapon;
@@ -18,6 +19,94 @@ public class Interceptor : MonoBehaviour
     public GameObject alienTarget;
 
     private bool _wasEngageAsked;
+    private bool _isReturningToBase;
+
+    void Awake()
+    {
+        MessagingCenter.Subscribe<EngageConfirm>
+            (this, GameEvent.InterceptorEngageRequestConfirmed,
+            (engage) =>
+            {
+                TryEngage();
+            });
+
+        MessagingCenter.Subscribe<EngageConfirm>
+            (this, GameEvent.InterceptorEngageContinuePursuit,
+            (engage) =>
+            {
+                TryContinuePursuit();
+            });
+
+        MessagingCenter.Subscribe<EngageConfirm>
+            (this, GameEvent.InterceptorEngageReturnToBase,
+            (engage) =>
+            {
+                TryReturnToBase();
+            });
+    }
+
+    void Destroy()
+    {
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageRequestConfirmed);
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageContinuePursuit);
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageReturnToBase);
+    }
+
+    private void TryEngage()
+    {
+        var alienSub = alienTarget.GetComponent<AlienSub>();
+        if (alienSub == null)
+            return;
+
+        if (InterceptorType == InterceptorType.Triton)
+        {
+            if (alienSub.SubStatus == AlienSubStatus.Moving)
+            {
+                Debug.Log("Triton can't deploy troops while target is moving");
+            }
+            else
+            {
+                Debug.Log("Triton deploying troops");
+            }
+            return;
+        }
+        
+        if (InterceptorType == InterceptorType.Barracuda)
+        {
+            if (alienSub.SubStatus == AlienSubStatus.Moving)
+            {
+                Debug.Log("Barracuda starting battle");
+            }
+            else
+            {
+                Debug.Log("Barracuda can't deploy troops");
+            }
+            return;
+        }
+
+        if (InterceptorType == InterceptorType.Manta)
+        {
+            if (alienSub.SubStatus == AlienSubStatus.Moving)
+            {
+                Debug.Log("Manta starting battle");
+            }
+            else
+            {
+                Debug.Log("Manta deploying troops");
+            }
+            return;
+        }
+    }
+
+    private void TryContinuePursuit()
+    {
+    }
+
+    private void TryReturnToBase()
+    {
+        DestinationPoint = StartPoint;
+        _isReturningToBase = true;
+    }
 
     void Start()
     {
@@ -40,6 +129,13 @@ public class Interceptor : MonoBehaviour
         if (InterceptorStatus == InterceptorStatus.Destroyed)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        if (InterceptorStatus == InterceptorStatus.Moving
+            && _isReturningToBase)
+        {
+            MoveToSelectedGlobePosition();
             return;
         }
 
@@ -70,12 +166,12 @@ public class Interceptor : MonoBehaviour
 
                 transform.LookAt(Vector3.zero);
 
-                TryEngageAlienSub(alienSub);
+                TryRequestForEngagingAlienSub(alienSub);
             }
         }
     }
 
-    private void TryEngageAlienSub(AlienSub alienSub)
+    private void TryRequestForEngagingAlienSub(AlienSub alienSub)
     {
         if (_wasEngageAsked)
             return;
@@ -85,7 +181,14 @@ public class Interceptor : MonoBehaviour
         if (distance > FightEnterDistance)
             return;
 
-        MessagingCenter.Send(this, GameEvent.EngageConfirmed, Id);
+        var interceptorDto = new InterceptorDto
+        {
+            Id = this.Id,
+            Name = this.Name,
+            InterceptorType = this.InterceptorType
+        };
+
+        MessagingCenter.Send(this, GameEvent.InterceptorEngageRequest, interceptorDto);
 
         _wasEngageAsked = true;
     }

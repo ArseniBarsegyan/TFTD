@@ -8,7 +8,7 @@ public class AlienSub : MonoBehaviour
     public AlienSubStatus SubStatus;
     public AlienRace Race;
     public AlienSubWeapon Weapon;
-    public float StartSpeed = 1.0f;
+    public float StartSpeed = 2.0f;
     public float Speed;
     public int Health = 100;
     public Vector3 StartPoint;

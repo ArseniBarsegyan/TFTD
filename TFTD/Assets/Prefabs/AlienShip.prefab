@@ -109,8 +109,8 @@ MonoBehaviour:
   SubStatus: 1
   Race: 0
   Weapon: 0
-  StartSpeed: 1
-  Speed: 1
+  StartSpeed: 2
+  Speed: 0
   Health: 100
   StartPoint: {x: 0, y: 0, z: 0}
   DestinationPoint: {x: 0, y: 0, z: 0}
