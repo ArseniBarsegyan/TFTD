@@ -12,14 +12,14 @@ public class XComObjectsController : MonoBehaviour
         BasesController = GetComponent<XComBasesController>();
 
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
-            (this, GameEvent.XComBaseCreated,
+            (this, GameEvent.GameEventsControllerXComBaseCreated,
             (controller, geoPosition) =>
             {
                 BasesController.CreateXComBase(geoPosition);
             });
 
         MessagingCenter.Subscribe<SelectInterceptor, Guid>
-            (this, GameEvent.AlienTargetClicked,
+            (this, GameEvent.ClickableAlienTargetAlienTargetClicked,
             (target, id) =>
             {
                 // TODO: create interceptor game object, and send it to target
@@ -29,8 +29,8 @@ public class XComObjectsController : MonoBehaviour
 
     void Destroy()
     {
-        MessagingCenter.Unsubscribe<GameEventsController>(this, GameEvent.XComBaseCreated);
-        MessagingCenter.Unsubscribe<SelectInterceptor>(this, GameEvent.AlienTargetClicked);
+        MessagingCenter.Unsubscribe<GameEventsController>(this, GameEvent.GameEventsControllerXComBaseCreated);
+        MessagingCenter.Unsubscribe<SelectInterceptor>(this, GameEvent.ClickableAlienTargetAlienTargetClicked);
     }
 
     public static InterceptorsController Interceptors { get; set; }

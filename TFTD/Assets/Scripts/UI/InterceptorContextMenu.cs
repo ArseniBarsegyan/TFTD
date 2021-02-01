@@ -7,19 +7,21 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EngageConfirm : MonoBehaviour
+public class InterceptorContextMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject engageConfirmationPanel;
-    [SerializeField] private GameObject engageMessageText;
+    [SerializeField] private GameObject interceptorContextMenuPanel;
+    [SerializeField] private GameObject interceptorContextMenuText;
 
     private List<InterceptorDto> _requests = new List<InterceptorDto>();
 
     void Awake()
     {
-        engageConfirmationPanel.SetActive(false);
+        interceptorContextMenuPanel.SetActive(false);
 
-        MessagingCenter.Subscribe<Interceptor, InterceptorDto>(
-            this, GameEvent.EngageConfirmInterceptorEngageRequest, (interceptor, dto) =>
+        MessagingCenter.Subscribe<InterceptorsController, InterceptorDto>(
+            this,
+            GameEvent.InterceptorControllerRequestContextAction,
+            (controller, dto) =>
             {
                 _requests.Add(dto);
                 TryAskPlayer();
@@ -28,7 +30,7 @@ public class EngageConfirm : MonoBehaviour
 
     private void TryAskPlayer()
     {
-        engageConfirmationPanel.SetActive(true);
+        interceptorContextMenuPanel.SetActive(true);
         StartCoroutine(AskCoroutine());
     }
 
@@ -38,7 +40,7 @@ public class EngageConfirm : MonoBehaviour
         {
             var dto = _requests.LastOrDefault();
 
-            var engageMessage = engageMessageText.GetComponent<Text>();
+            var engageMessage = interceptorContextMenuText.GetComponent<Text>();
 
             if (engageMessage == null)
                 yield return null;
@@ -53,30 +55,32 @@ public class EngageConfirm : MonoBehaviour
             }
             yield return null;
         }
-        engageConfirmationPanel.SetActive(false);
+        interceptorContextMenuPanel.SetActive(false);
         yield return null;
     }
 
     public void ConfirmEngage()
     {
-        MessagingCenter.Send(this, GameEvent.EngageConfirmRequestConfirmed);
+        MessagingCenter.Send(this, GameEvent.InterceptorContextMenuEngageConfirmed);
         _requests.Remove(_requests.LastOrDefault());
     }
 
-    public void ContinuePursuit()
+    public void ContinueAction()
     {
-        MessagingCenter.Send(this, GameEvent.EngageConfirmContinuePursuit);
+        MessagingCenter.Send(this, GameEvent.InterceptorContextMenuContinueAction);
         _requests.Remove(_requests.LastOrDefault());
     }
 
     public void ReturnToBase()
     {
-        MessagingCenter.Send(this, GameEvent.EngageConfirmReturnToBase);
+        MessagingCenter.Send(this, GameEvent.InterceptorContextMenuReturnToBaseAction);
         _requests.Remove(_requests.LastOrDefault());
     }
 
     void Destroy()
     {
-        MessagingCenter.Unsubscribe<Interceptor, InterceptorDto>(this, GameEvent.EngageConfirmInterceptorEngageRequest);
+        MessagingCenter.Unsubscribe<InterceptorsController, InterceptorDto>(
+            this,
+            GameEvent.InterceptorControllerRequestContextAction);
     }
 }

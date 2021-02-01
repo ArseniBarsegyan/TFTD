@@ -1,12 +1,18 @@
 ﻿public static class GameEvent
 {
-    public const string AlienSubSpawn = nameof(AlienSubSpawn);
-    public const string AlienTargetClicked = nameof(AlienTargetClicked);
-    public const string XComBaseCreated = nameof(XComBaseCreated);
-    public const string InterceptorSelectConfirmed = nameof(InterceptorSelectConfirmed);
+    public const string AlienSubsControllerAlienSubSpawn = nameof(AlienSubsControllerAlienSubSpawn);
+    public const string ClickableAlienTargetAlienTargetClicked = nameof(ClickableAlienTargetAlienTargetClicked);
+    public const string GameEventsControllerXComBaseCreated = nameof(GameEventsControllerXComBaseCreated);
+    public const string SelectInterceptorSelectConfirmed = nameof(SelectInterceptorSelectConfirmed);
     public const string InterceptorListItemSelected = nameof(InterceptorListItemSelected);
-    public const string InterceptorEngageRequest = nameof(InterceptorEngageRequest);
-    public const string InterceptorEngageRequestConfirmed = nameof(InterceptorEngageRequestConfirmed);
-    public const string InterceptorEngageContinuePursuit = nameof(InterceptorEngageContinuePursuit);
-    public const string InterceptorEngageReturnToBase = nameof(InterceptorEngageReturnToBase);
+    public const string EngageConfirmInterceptorEngageRequest = nameof(EngageConfirmInterceptorEngageRequest);
+    public const string EngageConfirmRequestConfirmed = nameof(EngageConfirmRequestConfirmed);
+    public const string EngageConfirmContinuePursuit = nameof(EngageConfirmContinuePursuit);
+    public const string EngageConfirmReturnToBase = nameof(EngageConfirmReturnToBase);
+    public const string InterceptorReturnedToBase = nameof(InterceptorReturnedToBase);
+    public const string InterceptorContextMenuEngageConfirmed = nameof(InterceptorContextMenuEngageConfirmed);
+    public const string InterceptorContextMenuContinueAction = nameof(InterceptorContextMenuContinueAction);
+    public const string InterceptorContextMenuReturnToBaseAction = nameof(InterceptorContextMenuReturnToBaseAction);
+    public const string InterceptorControllerRequestContextAction = nameof(InterceptorControllerRequestContextAction);
+    public const string InterceptorControllerRequestCameraFocus = nameof(InterceptorControllerRequestCameraFocus);
 }

@@ -7,6 +7,6 @@ public class ClickableAlienTarget : MonoBehaviour
 
     public void AlienTargetClicked()
     {
-        MessagingCenter.Send(this, GameEvent.AlienTargetClicked, AlienSubDto.Id);
+        MessagingCenter.Send(this, GameEvent.ClickableAlienTargetAlienTargetClicked, AlienSubDto.Id);
     }
 }

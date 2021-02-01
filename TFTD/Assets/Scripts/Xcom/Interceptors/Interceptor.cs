@@ -1,10 +1,12 @@
 ﻿using Assets.Scripts.Messaging;
+
 using System;
+
 using UnityEngine;
 
 public class Interceptor : MonoBehaviour
 {
-    private const float FightEnterDistance = 0.05f;
+    private const float InteractionEnterDistance = 0.05f;
 
     public string Name;
     public Guid Id;
@@ -13,7 +15,7 @@ public class Interceptor : MonoBehaviour
     public InterceptorStatus InterceptorStatus;
     public float StartSpeed = 5.0f;
     public float Speed;
-    public int Health = 100;
+    public float Health = 100;
     public Vector3 StartPoint;
     public Vector3 DestinationPoint;
     public GameObject alienTarget;
@@ -21,35 +23,61 @@ public class Interceptor : MonoBehaviour
     private bool _wasEngageAsked;
     private bool _isReturningToBase;
 
+    public float Fuel { get; set; }
+
     void Awake()
     {
         MessagingCenter.Subscribe<EngageConfirm>
-            (this, GameEvent.InterceptorEngageRequestConfirmed,
+            (this, GameEvent.EngageConfirmRequestConfirmed,
             (engage) =>
             {
                 TryEngage();
             });
 
         MessagingCenter.Subscribe<EngageConfirm>
-            (this, GameEvent.InterceptorEngageContinuePursuit,
+            (this, GameEvent.EngageConfirmContinuePursuit,
             (engage) =>
             {
                 TryContinuePursuit();
             });
 
         MessagingCenter.Subscribe<EngageConfirm>
-            (this, GameEvent.InterceptorEngageReturnToBase,
+            (this, GameEvent.EngageConfirmReturnToBase,
             (engage) =>
             {
-                TryReturnToBase();
+                SetDistanationPointAsBase();
+            });
+
+        MessagingCenter.Subscribe<InterceptorContextMenu>
+            (this, GameEvent.InterceptorContextMenuEngageConfirmed,
+            (contextMenu) =>
+            {
+                TryEngage();
+            });
+
+        MessagingCenter.Subscribe<InterceptorContextMenu>
+            (this, GameEvent.InterceptorContextMenuContinueAction,
+            (contextMenu) =>
+            {
+            });
+
+        MessagingCenter.Subscribe<InterceptorContextMenu>
+            (this, GameEvent.InterceptorContextMenuReturnToBaseAction,
+            (contextMenu) =>
+            {
+                SetDistanationPointAsBase();
             });
     }
 
     void Destroy()
     {
-        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageRequestConfirmed);
-        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageContinuePursuit);
-        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.InterceptorEngageReturnToBase);
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.EngageConfirmRequestConfirmed);
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.EngageConfirmContinuePursuit);
+        MessagingCenter.Unsubscribe<EngageConfirm>(this, GameEvent.EngageConfirmReturnToBase);
+
+        MessagingCenter.Unsubscribe<InterceptorContextMenu>(this, GameEvent.InterceptorContextMenuEngageConfirmed);
+        MessagingCenter.Unsubscribe<InterceptorContextMenu>(this, GameEvent.InterceptorContextMenuContinueAction);
+        MessagingCenter.Unsubscribe<InterceptorContextMenu>(this, GameEvent.InterceptorContextMenuReturnToBaseAction);
     }
 
     private void TryEngage()
@@ -102,7 +130,7 @@ public class Interceptor : MonoBehaviour
     {
     }
 
-    private void TryReturnToBase()
+    private void SetDistanationPointAsBase()
     {
         DestinationPoint = StartPoint;
         _isReturningToBase = true;
@@ -118,7 +146,6 @@ public class Interceptor : MonoBehaviour
     void Update()
     {
         if (InterceptorStatus == InterceptorStatus.Repairing
-            || InterceptorStatus == InterceptorStatus.Refueling
             || InterceptorStatus == InterceptorStatus.Crashed
             || InterceptorStatus == InterceptorStatus.Reloading
             || InterceptorStatus == InterceptorStatus.Transfering)
@@ -132,22 +159,34 @@ public class Interceptor : MonoBehaviour
             return;
         }
 
+        ConsumeFuel();
+        if (Fuel <= 0)
+        {
+            SetDistanationPointAsBase();
+        }
+
         if (InterceptorStatus == InterceptorStatus.Moving
             && _isReturningToBase)
         {
-            MoveToSelectedGlobePosition();
+            MoveToDestinationPoint();
+            TryReturnToHangar();
             return;
         }
 
         if (InterceptorStatus == InterceptorStatus.Moving)
-        {
+        {            
+            if (Fuel <= 0)
+            {
+                SetDistanationPointAsBase();
+            }
+
             if (alienTarget != null)
             {
                 PursuitTarget();
             }
             else
             {
-                MoveToSelectedGlobePosition();
+                MoveToDestinationPoint();
             }
         }
     }
@@ -178,7 +217,7 @@ public class Interceptor : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, alienSub.transform.position);
 
-        if (distance > FightEnterDistance)
+        if (distance > InteractionEnterDistance)
             return;
 
         var interceptorDto = new InterceptorDto
@@ -188,12 +227,12 @@ public class Interceptor : MonoBehaviour
             InterceptorType = this.InterceptorType
         };
 
-        MessagingCenter.Send(this, GameEvent.InterceptorEngageRequest, interceptorDto);
+        MessagingCenter.Send(this, GameEvent.EngageConfirmInterceptorEngageRequest, interceptorDto);
 
         _wasEngageAsked = true;
     }
 
-    private void MoveToSelectedGlobePosition()
+    private void MoveToDestinationPoint()
     {
         transform.position = Vector3.RotateTowards(transform.position,
                 DestinationPoint,
@@ -201,5 +240,28 @@ public class Interceptor : MonoBehaviour
                 0f);
 
         transform.LookAt(Vector3.zero);
+    }
+
+    private void ConsumeFuel()
+    {
+        if (Fuel <= 0)
+            return;
+
+        Fuel -= Time.deltaTime;
+    }
+
+    private void TryReturnToHangar()
+    {
+        if (_isReturningToBase)
+        {
+            float distance = Vector3.Distance(transform.position, DestinationPoint);
+
+            if (distance > InteractionEnterDistance)
+                return;
+        }
+
+        _isReturningToBase = false;
+
+        MessagingCenter.Send(this, GameEvent.InterceptorReturnedToBase);
     }
 }

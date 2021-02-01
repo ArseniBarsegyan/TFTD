@@ -43,15 +43,15 @@ public class GameEventsController : MonoBehaviour
         var dtoModel = new AlienSubDto
         {
             Id = Guid.NewGuid(),
-            StartPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(0).Point,
-            DestinationPoint = MissionLocator.AlienBasesPossibleLocations.ElementAt(2).Point,
+            StartPoint = MissionLocator.AlienSubSpawnPossibleLocations.ElementAt(0).Point,
+            DestinationPoint = MissionLocator.AlienSubSpawnPossibleLocations.ElementAt(1).Point,
             Race = AlienRace.Tasoth,
             Speed = 1.0f,
             Weapon = AlienSubWeapon.HeavyPlasma,
             SubType = AlienSubType.Battleship,
             Status = AlienSubStatus.Moving
         };
-        MessagingCenter.Instance.Send(this, GameEvent.AlienSubSpawn, dtoModel);
+        MessagingCenter.Instance.Send(this, GameEvent.AlienSubsControllerAlienSubSpawn, dtoModel);
     }
 
     public void XComBaseCreated(string locationName)
@@ -60,7 +60,7 @@ public class GameEventsController : MonoBehaviour
            .FirstOrDefault(x => x.Name == locationName);
         if (arcticBaseLocation != null)
         {
-            MessagingCenter.Send(this, GameEvent.XComBaseCreated, arcticBaseLocation);
+            MessagingCenter.Send(this, GameEvent.GameEventsControllerXComBaseCreated, arcticBaseLocation);
         }
     }
 }

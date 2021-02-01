@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.Messaging;
+
+using System;
 using System.Collections;
-using Assets.Scripts.Messaging;
+
 using UnityEngine;
 
 public class GeoscapeCamera : MonoBehaviour
@@ -25,34 +27,42 @@ public class GeoscapeCamera : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubSpawn,
+        (this, GameEvent.AlienSubsControllerAlienSubSpawn,
             (controller, dto) =>
             {
                 StartCoroutine(MoveCameraOverPoint(dto.StartPoint));
             });
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
-            (this, GameEvent.XComBaseCreated,
+            (this, GameEvent.GameEventsControllerXComBaseCreated,
             (controller, geoPosition) =>
             {
                 SetXComBaseLocation(geoPosition);
             });
         MessagingCenter.Subscribe<ClickableAlienTarget, Guid>
-            (this, GameEvent.AlienTargetClicked,
+            (this, GameEvent.ClickableAlienTargetAlienTargetClicked,
             (target, id) =>
             {
                 var alienSub = AlienSubsController.GetAlienSubById(id);
                 StartCoroutine(MoveCameraOverPoint(alienSub.transform.position));
+            });
+        MessagingCenter.Subscribe<InterceptorsController, Vector3>
+            (this, GameEvent.InterceptorControllerRequestCameraFocus,
+            (target, position) =>
+            {
+                StartCoroutine(MoveCameraOverPoint(position));
             });
     }
 
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
-            GameEvent.AlienSubSpawn);
+            GameEvent.AlienSubsControllerAlienSubSpawn);
         MessagingCenter.Unsubscribe<GameEventsController, GeoPosition>(this,
-            GameEvent.XComBaseCreated);
+            GameEvent.GameEventsControllerXComBaseCreated);
         MessagingCenter.Unsubscribe<ClickableAlienTarget, AlienSubDto>(this,
-            GameEvent.AlienTargetClicked);
+            GameEvent.ClickableAlienTargetAlienTargetClicked);
+        MessagingCenter.Unsubscribe<InterceptorsController, Vector3>(this,
+            GameEvent.InterceptorControllerRequestCameraFocus);
     }
 
     void Start()

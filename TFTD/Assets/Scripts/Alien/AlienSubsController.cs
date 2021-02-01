@@ -11,7 +11,7 @@ public class AlienSubsController : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubSpawn, 
+        (this, GameEvent.AlienSubsControllerAlienSubSpawn, 
             (controller, dto) => 
             {
                 CreateSub(dto);
@@ -21,7 +21,7 @@ public class AlienSubsController : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this, 
-            GameEvent.AlienSubSpawn);
+            GameEvent.AlienSubsControllerAlienSubSpawn);
     }
 
     public static GameObject GetAlienSubById(Guid id)

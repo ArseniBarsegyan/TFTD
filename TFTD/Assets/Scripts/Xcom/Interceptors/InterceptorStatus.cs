@@ -1,8 +1,7 @@
 ﻿public enum InterceptorStatus
 {
-    New,
+    Ready,
     Repairing,
-    Refueling,
     Reloading,
     Transfering,
     Moving,

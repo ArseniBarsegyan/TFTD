@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
+
 using Vector3 = UnityEngine.Vector3;
 
 /// <summary>
@@ -15,6 +17,8 @@ public class MissionLocator : MonoBehaviour
     /// </summary>
     public static List<GeoPosition> AlienSubSpawnPossibleLocations = new List<GeoPosition>
     {
+        new GeoPosition { Name = "South_India", Point = new Vector3(4.6f, 0.0f, -2.0f)},
+        new GeoPosition { Name = "Madagaskar", Point = new Vector3(2.5f, -1.1f, -4.2f)},
     };
     /// <summary>
     /// Terror missions can be in oceans (on ships) or port-cities

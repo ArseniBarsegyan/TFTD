@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class TimeController : MonoBehaviour
 {
-    // default time change speed
-    private float _currentSpeed = 1.0f;
-
     private Material _globeMaterial;
     private bool _timeChanged;
 
@@ -16,17 +13,19 @@ public class TimeController : MonoBehaviour
     [SerializeField] private GameObject globe;
 
     public DateTime CurrentDate { get; private set; }
+    public TimeSpeed TimeSpeed { get; set; }
 
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubSpawn,
+        (this, GameEvent.AlienSubsControllerAlienSubSpawn,
             (controller, dto) =>
             {
                 SetCurrentTimeSpeedToSeconds();
             });
+
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
-        (this, GameEvent.XComBaseCreated,
+        (this, GameEvent.GameEventsControllerXComBaseCreated,
             (controller, position) =>
             {
                 SetCurrentTimeSpeedToSeconds();
@@ -36,9 +35,9 @@ public class TimeController : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
-            GameEvent.AlienSubSpawn);
+            GameEvent.AlienSubsControllerAlienSubSpawn);
         MessagingCenter.Unsubscribe<GameEventsController>(this,
-            GameEvent.XComBaseCreated);
+            GameEvent.GameEventsControllerXComBaseCreated);
     }
 
     void Start()
@@ -48,32 +47,27 @@ public class TimeController : MonoBehaviour
         StopTime();
     }
 
-    private const float OneHourSpeed = 3600f;
-    private const float SixHoursSpeed = 21600f;
-    private const float OneDaySpeed = 86400f;
-    private const float OneSecondSpeed = 1f;
-
     void Update()
     {
         if (_timeChanged)
         {
             float shadowSpeed = 0.001f;
 
-            switch (_currentSpeed)
+            switch (TimeSpeed)
             {
-                case 0:
+                case TimeSpeed.Stop:
                     shadowSpeed = 0f;
                     break;
-                case OneDaySpeed:
+                case TimeSpeed.OneDay:
                     shadowSpeed = 0.5f;
                     break;
-                case SixHoursSpeed:
+                case TimeSpeed.SixHours:
                     shadowSpeed = 0.1f;
                     break;
-                case OneHourSpeed:
+                case TimeSpeed.OneHour:
                     shadowSpeed = 0.05f;
                     break;
-                case OneSecondSpeed:
+                case TimeSpeed.OneSecond:
                     shadowSpeed = 0.001f;
                     break;
             }
@@ -84,36 +78,36 @@ public class TimeController : MonoBehaviour
         dateLabel.text = CurrentDate.ToString("d");
         timeLabel.text = CurrentDate.ToString("HH:mm:ss");
         
-        CurrentDate = CurrentDate.AddSeconds(Time.deltaTime * _currentSpeed);
+        CurrentDate = CurrentDate.AddSeconds(Time.deltaTime * (int)TimeSpeed);
     }
 
     public void StopTime()
     {
-        _currentSpeed = 0f;
+        TimeSpeed = TimeSpeed.Stop;
         _timeChanged = true;
     }
 
     public void SetCurrentTimeSpeedToSeconds()
     {
-        _currentSpeed = 1.0f;
+        TimeSpeed = TimeSpeed.OneSecond;
         _timeChanged = true;
     }
 
     public void SetCurrentTimeSpeedToHours()
     {
-        _currentSpeed = 3600.0f;
+        TimeSpeed = TimeSpeed.OneHour;
         _timeChanged = true;
     }
 
-    public void SetCurrentTimeSpeedToHalfDay()
+    public void SetCurrentTimeSpeedToSixHours()
     {
-        _currentSpeed = 21600.0f;
+        TimeSpeed = TimeSpeed.SixHours;
         _timeChanged = true;
     }
 
     public void SetCurrentTimeSpeedToDay()
     {
-        _currentSpeed = 86400.0f;
+        TimeSpeed = TimeSpeed.OneDay;
         _timeChanged = true;
     }
 }

@@ -14,7 +14,7 @@ public class SelectInterceptor : MonoBehaviour
     {
         interceptionPanel.SetActive(false);
         MessagingCenter.Subscribe<ClickableAlienTarget, Guid>
-            (this, GameEvent.AlienTargetClicked,
+            (this, GameEvent.ClickableAlienTargetAlienTargetClicked,
             (target, id) =>
             {
                 ShowInterceptionPanel();
@@ -32,7 +32,7 @@ public class SelectInterceptor : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<ClickableAlienTarget>
-            (this, GameEvent.AlienTargetClicked);
+            (this, GameEvent.ClickableAlienTargetAlienTargetClicked);
         MessagingCenter.Unsubscribe<SelectableInterceptorListItem>
             (this, GameEvent.InterceptorListItemSelected);
     }
@@ -109,7 +109,7 @@ public class SelectInterceptor : MonoBehaviour
             SpaceCraftId = id,
             TargetId = alienTargetId
         };
-        MessagingCenter.Send(this, GameEvent.InterceptorSelectConfirmed, dto);
+        MessagingCenter.Send(this, GameEvent.SelectInterceptorSelectConfirmed, dto);
         HideInterceptionPanel();
     }
 
