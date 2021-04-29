@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.Messaging;
+
+using System;
 using System.Collections.Generic;
-using Assets.Scripts.Messaging;
+
 using UnityEngine;
 
 public class AlienSubsController : MonoBehaviour
@@ -11,7 +13,7 @@ public class AlienSubsController : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubsControllerAlienSubSpawn, 
+        (this, GameEvent.GameEventsControllerAlienSubSpawn, 
             (controller, dto) => 
             {
                 CreateSub(dto);
@@ -21,7 +23,7 @@ public class AlienSubsController : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this, 
-            GameEvent.AlienSubsControllerAlienSubSpawn);
+            GameEvent.GameEventsControllerAlienSubSpawn);
     }
 
     public static GameObject GetAlienSubById(Guid id)

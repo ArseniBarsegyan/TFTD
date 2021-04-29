@@ -27,7 +27,7 @@ public class GeoscapeCamera : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubsControllerAlienSubSpawn,
+        (this, GameEvent.GameEventsControllerAlienSubSpawn,
             (controller, dto) =>
             {
                 StartCoroutine(MoveCameraOverPoint(dto.StartPoint));
@@ -56,7 +56,7 @@ public class GeoscapeCamera : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
-            GameEvent.AlienSubsControllerAlienSubSpawn);
+            GameEvent.GameEventsControllerAlienSubSpawn);
         MessagingCenter.Unsubscribe<GameEventsController, GeoPosition>(this,
             GameEvent.GameEventsControllerXComBaseCreated);
         MessagingCenter.Unsubscribe<ClickableAlienTarget, AlienSubDto>(this,

@@ -1,6 +1,6 @@
 ﻿public static class GameEvent
 {
-    public const string AlienSubsControllerAlienSubSpawn = nameof(AlienSubsControllerAlienSubSpawn);
+    public const string GameEventsControllerAlienSubSpawn = nameof(GameEventsControllerAlienSubSpawn);
     public const string ClickableAlienTargetAlienTargetClicked = nameof(ClickableAlienTargetAlienTargetClicked);
     public const string GameEventsControllerXComBaseCreated = nameof(GameEventsControllerXComBaseCreated);
     public const string SelectInterceptorSelectConfirmed = nameof(SelectInterceptorSelectConfirmed);

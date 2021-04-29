@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Messaging;
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(InterceptorsController))]
@@ -8,7 +7,7 @@ public class XComObjectsController : MonoBehaviour
 {
     void Awake()
     {
-        Interceptors = GetComponent<InterceptorsController>();
+        InterceptorsController = GetComponent<InterceptorsController>();
         BasesController = GetComponent<XComBasesController>();
 
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
@@ -18,21 +17,28 @@ public class XComObjectsController : MonoBehaviour
                 BasesController.CreateXComBase(geoPosition);
             });
 
-        MessagingCenter.Subscribe<SelectInterceptor, Guid>
-            (this, GameEvent.ClickableAlienTargetAlienTargetClicked,
-            (target, id) =>
+        MessagingCenter.Subscribe<SelectInterceptor, TargetSelectedDto>
+            (this, GameEvent.SelectInterceptorSelectConfirmed,
+            (component, dto) =>
             {
-                // TODO: create interceptor game object, and send it to target
-                Debug.Log("Interceptor guid " + id);
+                InterceptorsController.StartIntercept(dto);
+            });
+
+        MessagingCenter.Subscribe<Interceptor>
+            (this, GameEvent.InterceptorReturnedToBase,
+            (interceptor) =>
+            {
+                InterceptorsController.ReturnInterceptorToBase(interceptor);
             });
     }
 
     void Destroy()
     {
-        MessagingCenter.Unsubscribe<GameEventsController>(this, GameEvent.GameEventsControllerXComBaseCreated);
-        MessagingCenter.Unsubscribe<SelectInterceptor>(this, GameEvent.ClickableAlienTargetAlienTargetClicked);
+        MessagingCenter.Unsubscribe<GameEventsController, GeoPosition>(this, GameEvent.GameEventsControllerXComBaseCreated);
+        MessagingCenter.Unsubscribe<SelectInterceptor, TargetSelectedDto>(this, GameEvent.SelectInterceptorSelectConfirmed);
+        MessagingCenter.Unsubscribe<Interceptor>(this, GameEvent.InterceptorReturnedToBase);
     }
 
-    public static InterceptorsController Interceptors { get; set; }
+    public static InterceptorsController InterceptorsController { get; set; }
     public static XComBasesController BasesController { get; set; }
 }

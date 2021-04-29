@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Messaging;
+
 using UnityEngine;
 
 public class AlienTargetsListController : MonoBehaviour
@@ -9,7 +10,7 @@ public class AlienTargetsListController : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubsControllerAlienSubSpawn,
+        (this, GameEvent.GameEventsControllerAlienSubSpawn,
             (controller, dto) =>
             {
                 AddSpawnedAlienSubToList(dto);
@@ -19,7 +20,7 @@ public class AlienTargetsListController : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
-            GameEvent.AlienSubsControllerAlienSubSpawn);
+            GameEvent.GameEventsControllerAlienSubSpawn);
     }
 
     void Start()

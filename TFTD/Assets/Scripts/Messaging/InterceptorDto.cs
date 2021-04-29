@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using UnityEngine;
 
 public class InterceptorDto
@@ -13,4 +15,5 @@ public class InterceptorDto
     public InterceptorWeapon Weapon { get; set; }
     public InterceptorStatus Status { get; set; }
     public float Fuel { get; set; }
+    public List<SoldierDto> Soldiers { get; set; }
 }

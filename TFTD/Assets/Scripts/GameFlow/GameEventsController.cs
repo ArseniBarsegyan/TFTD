@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Assets.Scripts.Messaging;
+
+using System;
 using System.Globalization;
 using System.Linq;
-using Assets.Scripts.Messaging;
+
 using UnityEngine;
 
 public class GameEventsController : MonoBehaviour
@@ -14,8 +16,7 @@ public class GameEventsController : MonoBehaviour
 
     private DateTime _gameStartTime;
     private DateTime _lastAlienSubSpawnTime;
-
-    [SerializeField] private GameObject timeController;
+    private TimeController _timeController;
 
     private bool _subSpawned;
 
@@ -26,9 +27,11 @@ public class GameEventsController : MonoBehaviour
 
     void Update()
     {
-        DateTime currentDate = timeController.GetComponent<TimeController>().CurrentDate;
+        _timeController = FindObjectOfType<TimeController>();
+        DateTime currentDate = _timeController.CurrentDate;
 
         var stringDate = currentDate.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+
         if (stringDate == "01/01/2042 15:45" && !_subSpawned)
         {
             SpawnAlienSub();
@@ -39,7 +42,8 @@ public class GameEventsController : MonoBehaviour
     // TODO: spawned sub characteristics should depend on current time and tech level.
     public void SpawnAlienSub()
     {
-        _lastAlienSubSpawnTime = timeController.GetComponent<TimeController>().CurrentDate;
+        _lastAlienSubSpawnTime = _timeController.CurrentDate;
+
         var dtoModel = new AlienSubDto
         {
             Id = Guid.NewGuid(),
@@ -51,16 +55,18 @@ public class GameEventsController : MonoBehaviour
             SubType = AlienSubType.Battleship,
             Status = AlienSubStatus.Moving
         };
-        MessagingCenter.Instance.Send(this, GameEvent.AlienSubsControllerAlienSubSpawn, dtoModel);
+
+        MessagingCenter.Instance.Send(this, GameEvent.GameEventsControllerAlienSubSpawn, dtoModel);
     }
 
     public void XComBaseCreated(string locationName)
     {
-        var arcticBaseLocation = MissionLocator.XComBasePossibleLocations
+        var baseLocation = MissionLocator.XComBasePossibleLocations
            .FirstOrDefault(x => x.Name == locationName);
-        if (arcticBaseLocation != null)
+
+        if (baseLocation != null)
         {
-            MessagingCenter.Send(this, GameEvent.GameEventsControllerXComBaseCreated, arcticBaseLocation);
+            MessagingCenter.Send(this, GameEvent.GameEventsControllerXComBaseCreated, baseLocation);
         }
     }
 }

@@ -41,7 +41,7 @@ public class SelectInterceptor : MonoBehaviour
     {
         interceptionPanel.SetActive(true);
 
-        var allInterceptors = XComObjectsController.Interceptors.InterceptorsList;
+        var allInterceptors = XComObjectsController.InterceptorsController.InterceptorsList;
 
         for (int i = 0; i < allInterceptors.Count; i++)
         {

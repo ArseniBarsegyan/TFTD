@@ -10,39 +10,22 @@ using UnityEngine;
 public class InterceptorsController : MonoBehaviour
 {
     private const float DefaultInterceptorHealth = 100;
-    private const float DefaultInteceptorSpeed = 5.0f;
+    private const float DefaultInteceptorSpeed = 1.0f;
     private const float MinFuelToStartInterception = 10f;
 
+    private TimeController _timeController;
     private int _interceptorsCount;
 
     [SerializeField] private GameObject interceptorCraftPrefab;
 
     public List<InterceptorDto> InterceptorsList { get; } = new List<InterceptorDto>();
 
-    void Awake()
-    {
-        MessagingCenter.Subscribe<SelectInterceptor, TargetSelectedDto>
-            (this, GameEvent.SelectInterceptorSelectConfirmed,
-            (component, dto) =>
-            {
-                StartIntercept(dto);
-            });
-
-        MessagingCenter.Subscribe<Interceptor>
-            (this, GameEvent.InterceptorReturnedToBase,
-            (interceptor) => 
-            {
-                SynchronizeDtoData(interceptor);
-                Destroy(interceptor.gameObject);
-                Debug.Log($"{interceptor.Name} game object destroyed");
-            });
-    }
-
     void Start()
     {
         CreateNewTriton();
         CreateNewDefaultInterceptor();
         CreateNewDefaultInterceptor();
+        _timeController = FindObjectOfType<TimeController>();
     }
 
     void Update()
@@ -51,10 +34,10 @@ public class InterceptorsController : MonoBehaviour
         StartCoroutine(RepairInterceptorsIfNecessary());
     }
 
-    void Destroy()
+    public void ReturnInterceptorToBase(Interceptor interceptor)
     {
-        MessagingCenter.Unsubscribe<SelectInterceptor>(this, GameEvent.SelectInterceptorSelectConfirmed);
-        MessagingCenter.Unsubscribe<Interceptor>(this, GameEvent.InterceptorReturnedToBase);
+        SynchronizeDtoData(interceptor);
+        Destroy(interceptor.gameObject);
     }
 
     public void CreateNewDefaultInterceptor()
@@ -208,14 +191,11 @@ public class InterceptorsController : MonoBehaviour
 
     private IEnumerator RepairInterceptorsIfNecessary()
     {
-        var timeController = FindObjectOfType<TimeController>();
-        var timeSpeed = timeController.TimeSpeed;
-
         foreach (var dto in InterceptorsList.Where(x => x.Status == InterceptorStatus.Repairing))
         {
             while (dto.Health < 100f)
             {
-                dto.Health += (float)(int)timeSpeed / 1000000;
+                dto.Health += (float)(int)_timeController.TimeSpeed / 1000000;
 
                 if (dto.Health > 100f)
                 {
@@ -226,7 +206,7 @@ public class InterceptorsController : MonoBehaviour
                 yield return null;
             }
             dto.Status = InterceptorStatus.Ready;
-            timeController.SetCurrentTimeSpeedToSeconds();
+            _timeController.SetCurrentTimeSpeedToSeconds();
             Debug.Log($"{dto.Name} repaired");
         }
         yield return null;
@@ -234,8 +214,6 @@ public class InterceptorsController : MonoBehaviour
 
     private IEnumerator RefuelInterceptorsIfNecessary()
     {
-        var timeController = FindObjectOfType<TimeController>();
-
         foreach (var dto in InterceptorsList.Where(x => x.Status == InterceptorStatus.Ready))
         {
             if (dto.Health < 100f)
@@ -245,7 +223,7 @@ public class InterceptorsController : MonoBehaviour
 
             while (dto.Fuel < 100f)
             {
-                dto.Fuel += Time.deltaTime * (float)(int)timeController.TimeSpeed / 10;
+                dto.Fuel += Time.deltaTime * (float)(int)_timeController.TimeSpeed / 10;
 
                 if (dto.Fuel > 100f)
                 {

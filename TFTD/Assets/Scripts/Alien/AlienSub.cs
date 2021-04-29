@@ -1,8 +1,11 @@
 ﻿using System;
+
 using UnityEngine;
 
 public class AlienSub : MonoBehaviour
 {
+    private TimeController _timeController;
+
     public Guid Id;
     public AlienSubType SubType;
     public AlienSubStatus SubStatus;
@@ -19,6 +22,7 @@ public class AlienSub : MonoBehaviour
         transform.position = StartPoint;
         transform.LookAt(Vector3.zero);
         Speed = StartSpeed;
+        _timeController = FindObjectOfType<TimeController>();
     }
 
     void Update()
@@ -41,11 +45,20 @@ public class AlienSub : MonoBehaviour
 
         if (SubStatus == AlienSubStatus.Moving)
         {
-            transform.position = Vector3.RotateTowards(transform.position,
-                DestinationPoint,
-                Time.deltaTime * Speed * 0.01f,
-                0f);
-            transform.LookAt(Vector3.zero);
+            MoveToPosition(DestinationPoint);
         }
+    }
+
+    private void MoveToPosition(Vector3 position)
+    {
+        const float speedMultiplier = 0.01f;
+        const float timeSpeedMultiplier = 0.05f;
+
+        transform.position = Vector3.RotateTowards(transform.position,
+                position,
+                Time.deltaTime * Speed * speedMultiplier * (int)_timeController.TimeSpeed * timeSpeedMultiplier,
+                0f);
+
+        transform.LookAt(Vector3.zero);
     }
 }

@@ -1,5 +1,7 @@
-﻿using System;
-using Assets.Scripts.Messaging;
+﻿using Assets.Scripts.Messaging;
+
+using System;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +20,7 @@ public class TimeController : MonoBehaviour
     void Awake()
     {
         MessagingCenter.Subscribe<GameEventsController, AlienSubDto>
-        (this, GameEvent.AlienSubsControllerAlienSubSpawn,
+        (this, GameEvent.GameEventsControllerAlienSubSpawn,
             (controller, dto) =>
             {
                 SetCurrentTimeSpeedToSeconds();
@@ -35,7 +37,7 @@ public class TimeController : MonoBehaviour
     void Destroy()
     {
         MessagingCenter.Unsubscribe<GameEventsController, AlienSubDto>(this,
-            GameEvent.AlienSubsControllerAlienSubSpawn);
+            GameEvent.GameEventsControllerAlienSubSpawn);
         MessagingCenter.Unsubscribe<GameEventsController>(this,
             GameEvent.GameEventsControllerXComBaseCreated);
     }

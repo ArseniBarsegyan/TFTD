@@ -7,13 +7,14 @@ using UnityEngine;
 public class Interceptor : MonoBehaviour
 {
     private const float InteractionEnterDistance = 0.05f;
+    private TimeController _timeController;
 
     public string Name;
     public Guid Id;
     public InterceptorType InterceptorType;
     public InterceptorWeapon InterceptorWeapon;
     public InterceptorStatus InterceptorStatus;
-    public float StartSpeed = 5.0f;
+    public float StartSpeed = 1.0f;
     public float Speed;
     public float Health = 100;
     public Vector3 StartPoint;
@@ -83,18 +84,16 @@ public class Interceptor : MonoBehaviour
     private void TryEngage()
     {
         var alienSub = alienTarget.GetComponent<AlienSub>();
+
         if (alienSub == null)
             return;
 
         if (InterceptorType == InterceptorType.Triton)
         {
-            if (alienSub.SubStatus == AlienSubStatus.Moving)
+            if (alienSub.SubStatus == AlienSubStatus.Landed 
+                || alienSub.SubStatus == AlienSubStatus.Crashed)
             {
-                Debug.Log("Triton can't deploy troops while target is moving");
-            }
-            else
-            {
-                Debug.Log("Triton deploying troops");
+                TryDeployTroops();
             }
             return;
         }
@@ -103,11 +102,7 @@ public class Interceptor : MonoBehaviour
         {
             if (alienSub.SubStatus == AlienSubStatus.Moving)
             {
-                Debug.Log("Barracuda starting battle");
-            }
-            else
-            {
-                Debug.Log("Barracuda can't deploy troops");
+                TryStartBattle();
             }
             return;
         }
@@ -116,14 +111,25 @@ public class Interceptor : MonoBehaviour
         {
             if (alienSub.SubStatus == AlienSubStatus.Moving)
             {
-                Debug.Log("Manta starting battle");
+                TryStartBattle();
             }
-            else
+            else if (alienSub.SubStatus == AlienSubStatus.Landed 
+                || alienSub.SubStatus == AlienSubStatus.Crashed)
             {
-                Debug.Log("Manta deploying troops");
+                TryDeployTroops();
             }
             return;
         }
+    }
+
+    private void TryDeployTroops()
+    {
+        Debug.Log("Deploying troops");
+    }
+
+    private void TryStartBattle()
+    {
+        Debug.Log("Starting battle");
     }
 
     private void TryContinuePursuit()
@@ -141,6 +147,7 @@ public class Interceptor : MonoBehaviour
         transform.position = StartPoint;
         transform.LookAt(Vector3.zero);
         Speed = StartSpeed;
+        _timeController = FindObjectOfType<TimeController>();
     }
 
     void Update()
@@ -168,7 +175,7 @@ public class Interceptor : MonoBehaviour
         if (InterceptorStatus == InterceptorStatus.Moving
             && _isReturningToBase)
         {
-            MoveToDestinationPoint();
+            MoveToPosition(DestinationPoint);
             TryReturnToHangar();
             return;
         }
@@ -186,7 +193,7 @@ public class Interceptor : MonoBehaviour
             }
             else
             {
-                MoveToDestinationPoint();
+                MoveToPosition(DestinationPoint);
             }
         }
     }
@@ -198,13 +205,7 @@ public class Interceptor : MonoBehaviour
         {
             if (alienSub.SubStatus == AlienSubStatus.Moving)
             {
-                transform.position = Vector3.RotateTowards(transform.position,
-                alienSub.transform.position,
-                Time.deltaTime * Speed * 0.01f,
-                0f);
-
-                transform.LookAt(Vector3.zero);
-
+                MoveToPosition(alienSub.transform.position);
                 TryRequestForEngagingAlienSub(alienSub);
             }
         }
@@ -232,11 +233,14 @@ public class Interceptor : MonoBehaviour
         _wasEngageAsked = true;
     }
 
-    private void MoveToDestinationPoint()
+    private void MoveToPosition(Vector3 position)
     {
+        const float speedMultiplier = 0.01f;
+        const float timeSpeedMultiplier = 0.05f;
+
         transform.position = Vector3.RotateTowards(transform.position,
-                DestinationPoint,
-                Time.deltaTime * Speed * 0.01f,
+                position,
+                Time.deltaTime * Speed * speedMultiplier * (int)_timeController.TimeSpeed * timeSpeedMultiplier,
                 0f);
 
         transform.LookAt(Vector3.zero);
