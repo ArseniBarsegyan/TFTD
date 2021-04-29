@@ -8,6 +8,15 @@ public class XComBasesController : MonoBehaviour
     [SerializeField] private GameObject xComBasePrefab;
     private static List<XComBaseDto> _xComBases = new List<XComBaseDto>();
 
+    private XComSoldiersController _soldiersController;
+    private InterceptorsController _interceptorsController;
+
+    void Start()
+    {
+        _soldiersController = FindObjectOfType<XComSoldiersController>();
+        _interceptorsController = FindObjectOfType<InterceptorsController>();
+    }
+
     public XComBaseDto GetXComBase()
     {
         return _xComBases.FirstOrDefault();
@@ -18,12 +27,53 @@ public class XComBasesController : MonoBehaviour
         GameObject obj = Instantiate(xComBasePrefab);
         obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         obj.transform.position = position.Point;
-        _xComBases.Add(
-            new XComBaseDto
+
+        var newBaseDto = new XComBaseDto
+        {
+            Id = Guid.NewGuid(),
+            Name = position.Name,
+            Location = position.Point
+        };
+
+        if (!_xComBases.Any())
+        {
+            InitializeSoldiersForBase(newBaseDto);
+            InitilizeInterceptorsForBase(newBaseDto);
+        }
+
+        _xComBases.Add(newBaseDto);
+    }
+
+    private void InitializeSoldiersForBase(XComBaseDto baseDto)
+    {
+        baseDto.SoldierDtos = new List<SoldierDto>
             {
-                Id = Guid.NewGuid(),
-                Name = position.Name,
-                Location = position.Point
-            });
+                _soldiersController.CreateNewSoldier(
+                    SoldierRank.Rookie,
+                    SoldierSpecialty.Rookie,
+                    baseDto.Id),
+                _soldiersController.CreateNewSoldier(
+                    SoldierRank.Rookie,
+                    SoldierSpecialty.Rookie,
+                    baseDto.Id),
+                _soldiersController.CreateNewSoldier(
+                    SoldierRank.Rookie,
+                    SoldierSpecialty.Rookie,
+                    baseDto.Id),
+                _soldiersController.CreateNewSoldier(
+                    SoldierRank.Rookie,
+                    SoldierSpecialty.Rookie,
+                    baseDto.Id)
+            };
+    }
+
+    private void InitilizeInterceptorsForBase(XComBaseDto baseDto)
+    {
+        baseDto.InterceptorDtos = new List<InterceptorDto>
+        {
+            _interceptorsController.CreateNewTriton(baseDto.Id),
+            _interceptorsController.CreateNewDefaultInterceptor(baseDto.Id),
+            _interceptorsController.CreateNewDefaultInterceptor(baseDto.Id)
+        };
     }
 }

@@ -22,9 +22,6 @@ public class InterceptorsController : MonoBehaviour
 
     void Start()
     {
-        CreateNewTriton();
-        CreateNewDefaultInterceptor();
-        CreateNewDefaultInterceptor();
         _timeController = FindObjectOfType<TimeController>();
     }
 
@@ -40,7 +37,7 @@ public class InterceptorsController : MonoBehaviour
         Destroy(interceptor.gameObject);
     }
 
-    public void CreateNewDefaultInterceptor()
+    public InterceptorDto CreateNewDefaultInterceptor(Guid baseId)
     {
         _interceptorsCount++;
 
@@ -54,12 +51,14 @@ public class InterceptorsController : MonoBehaviour
             StartPoint = Vector3.zero,
             Status = InterceptorStatus.Ready,
             Weapon = InterceptorWeapon.SubRockets,
-            Fuel = 100
+            Fuel = 100,
+            BaseId = baseId
         };
         InterceptorsList.Add(dto);
+        return dto;
     }
 
-    public void CreateNewTriton()
+    public InterceptorDto CreateNewTriton(Guid baseId)
     {
         var dto = new InterceptorDto
         {
@@ -71,9 +70,11 @@ public class InterceptorsController : MonoBehaviour
             StartPoint = Vector3.zero,
             Status = InterceptorStatus.Ready,
             Weapon = InterceptorWeapon.None,
-            Fuel = 100
+            Fuel = 100,
+            BaseId = baseId
         };
         InterceptorsList.Add(dto);
+        return dto;
     }
 
     public void StartIntercept(TargetSelectedDto dto)

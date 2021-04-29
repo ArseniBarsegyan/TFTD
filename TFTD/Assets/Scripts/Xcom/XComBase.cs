@@ -1,15 +1,7 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class XComBase : MonoBehaviour
+public class XComBase
 {
-    private List<InterceptorDto> interceptors = new List<InterceptorDto>();
-
-    void Awake()
-    {
-    }
-
-    void Destroy()
-    {
-    }
+    public List<InterceptorDto> Interceptors { get; } = new List<InterceptorDto>();
+    public List<SoldierDto> Soldiers { get; } = new List<SoldierDto>();
 }

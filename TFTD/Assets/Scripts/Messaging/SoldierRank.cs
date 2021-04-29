@@ -1,6 +1,6 @@
 ﻿public enum SoldierRank
 {
-    Novice,
+    Rookie,
     Sergeant,
     Leutenant,
     Capitan

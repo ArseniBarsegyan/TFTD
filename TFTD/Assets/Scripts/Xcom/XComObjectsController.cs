@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(InterceptorsController))]
 [RequireComponent(typeof(XComBasesController))]
+[RequireComponent(typeof(XComSoldiersController))]
 public class XComObjectsController : MonoBehaviour
 {
     void Awake()

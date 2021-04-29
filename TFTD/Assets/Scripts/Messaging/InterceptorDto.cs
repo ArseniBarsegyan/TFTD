@@ -16,4 +16,5 @@ public class InterceptorDto
     public InterceptorStatus Status { get; set; }
     public float Fuel { get; set; }
     public List<SoldierDto> Soldiers { get; set; }
+    public Guid BaseId { get; set; }
 }
