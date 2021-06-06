@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class InterceptorsController : MonoBehaviour
 {
-    private const float DefaultInterceptorHealth = 100;
+    private const float DefaultInterceptorHealth = 100f;
     private const float DefaultInteceptorSpeed = 1.0f;
     private const float MinFuelToStartInterception = 10f;
 
@@ -34,6 +34,12 @@ public class InterceptorsController : MonoBehaviour
     public void ReturnInterceptorToBase(Interceptor interceptor)
     {
         SynchronizeDtoData(interceptor);
+
+        if (interceptor.InterceptorType != InterceptorType.Barracuda)
+        {
+            XComObjectsController.SoldiersController.SynchronizeSoldiersAfterMission(interceptor.Soldiers);
+        }
+        
         Destroy(interceptor.gameObject);
     }
 
@@ -167,6 +173,11 @@ public class InterceptorsController : MonoBehaviour
         interceptor.alienTarget = alienSubTarget;
         interceptor.InterceptorStatus = dto.Status;
         interceptor.Fuel = dto.Fuel;
+
+        if (dto.InterceptorType != InterceptorType.Barracuda)
+        {
+            interceptor.Soldiers = dto.Soldiers;
+        }
     }
 
     private void SynchronizeDtoData(Interceptor interceptor)
@@ -177,6 +188,11 @@ public class InterceptorsController : MonoBehaviour
             dto.Health = interceptor.Health;
             dto.Health = 90f;
             dto.Fuel = interceptor.Fuel;
+
+            if (dto.InterceptorType != InterceptorType.Barracuda)
+            {
+                dto.Soldiers = interceptor.Soldiers;
+            }
 
             if (dto.Health < 100f)
             {

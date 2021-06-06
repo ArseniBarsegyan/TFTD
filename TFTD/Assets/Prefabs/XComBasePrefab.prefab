@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3229070808780990552}
   - component: {fileID: 3229070808780990559}
   - component: {fileID: 3229070808780990558}
-  - component: {fileID: -1142194046953250001}
   m_Layer: 0
   m_Name: XComBasePrefab
   m_TagString: Untagged
@@ -56,6 +55,8 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,6 +81,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &3229070808780990558
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -93,15 +95,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-1142194046953250001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3229070808780990557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c78412b4537429242b437b249ae2417e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

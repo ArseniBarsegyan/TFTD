@@ -13,8 +13,8 @@ public class XComBasesController : MonoBehaviour
 
     void Start()
     {
-        _soldiersController = FindObjectOfType<XComSoldiersController>();
-        _interceptorsController = FindObjectOfType<InterceptorsController>();
+        _soldiersController = XComObjectsController.SoldiersController;
+        _interceptorsController = XComObjectsController.InterceptorsController;
     }
 
     public XComBaseDto GetXComBase()
@@ -38,7 +38,7 @@ public class XComBasesController : MonoBehaviour
         if (!_xComBases.Any())
         {
             InitializeSoldiersForBase(newBaseDto);
-            InitilizeInterceptorsForBase(newBaseDto);
+            InitializeInterceptorsForBase(newBaseDto);
         }
 
         _xComBases.Add(newBaseDto);
@@ -67,7 +67,7 @@ public class XComBasesController : MonoBehaviour
             };
     }
 
-    private void InitilizeInterceptorsForBase(XComBaseDto baseDto)
+    private void InitializeInterceptorsForBase(XComBaseDto baseDto)
     {
         baseDto.InterceptorDtos = new List<InterceptorDto>
         {

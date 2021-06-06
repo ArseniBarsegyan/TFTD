@@ -1,8 +1,11 @@
 ﻿using Assets.Scripts.Messaging;
 
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class Interceptor : MonoBehaviour
 {
@@ -16,10 +19,11 @@ public class Interceptor : MonoBehaviour
     public InterceptorStatus InterceptorStatus;
     public float StartSpeed = 1.0f;
     public float Speed;
-    public float Health = 100;
+    public float Health = 100f;
     public Vector3 StartPoint;
     public Vector3 DestinationPoint;
     public GameObject alienTarget;
+    public List<SoldierDto> Soldiers;
 
     private bool _wasEngageAsked;
     private bool _isReturningToBase;
@@ -118,13 +122,15 @@ public class Interceptor : MonoBehaviour
             {
                 TryDeployTroops();
             }
-            return;
         }
     }
 
     private void TryDeployTroops()
     {
+        // TODO: pass mission soldiers to battlescape
         Debug.Log("Deploying troops");
+        var soldiersToSend = XComObjectsController.SoldiersController.MissionSoldiers;
+        SceneManager.LoadScene("Battlescape");
     }
 
     private void TryStartBattle()

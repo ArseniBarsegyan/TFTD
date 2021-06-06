@@ -8,4 +8,5 @@ public class SoldierDto
     public SoldierRank Rank { get; set; }
     public SoldierSpecialty SoldierSpecialty { get; set; }
     public Guid BaseId { get; set; }
+    public int Experience { get; set; }
 }

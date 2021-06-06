@@ -10,6 +10,7 @@ public class XComObjectsController : MonoBehaviour
     {
         InterceptorsController = GetComponent<InterceptorsController>();
         BasesController = GetComponent<XComBasesController>();
+        SoldiersController = GetComponent<XComSoldiersController>();
 
         MessagingCenter.Subscribe<GameEventsController, GeoPosition>
             (this, GameEvent.GameEventsControllerXComBaseCreated,
@@ -42,4 +43,5 @@ public class XComObjectsController : MonoBehaviour
 
     public static InterceptorsController InterceptorsController { get; set; }
     public static XComBasesController BasesController { get; set; }
+    public static XComSoldiersController SoldiersController { get; set; }
 }

@@ -15,4 +15,5 @@
     public const string InterceptorContextMenuReturnToBaseAction = nameof(InterceptorContextMenuReturnToBaseAction);
     public const string InterceptorControllerRequestContextAction = nameof(InterceptorControllerRequestContextAction);
     public const string InterceptorControllerRequestCameraFocus = nameof(InterceptorControllerRequestCameraFocus);
+    public const string SelectMissionSoldiers = nameof(SelectMissionSoldiers);
 }

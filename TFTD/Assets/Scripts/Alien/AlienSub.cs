@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AlienSub : MonoBehaviour
 {
+    private const float InteractionEnterDistance = 0.05f;
     private TimeController _timeController;
 
     public Guid Id;
@@ -60,5 +61,12 @@ public class AlienSub : MonoBehaviour
                 0f);
 
         transform.LookAt(Vector3.zero);
+        
+        float distance = Vector3.Distance(transform.position, position);
+        
+        if (distance > InteractionEnterDistance)
+            return;
+
+        SubStatus = AlienSubStatus.Landed;
     }
 }
