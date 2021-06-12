@@ -987,3 +987,115 @@ Received Import Request.
 Start importing Assets/Scenes/Battlescape.unity using Guid(c042acd18b41a45b09d4e0afd7485db9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '987895d99a2f5eeb0a497bae47250fe4') in 0.009765 seconds
   Import took 0.015304 seconds .
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001679 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 1.01 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.201 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.68 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2979 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 233.3 MB.
+System memory in use after: 233.6 MB.
+
+Unloading 41 unused Assets to reduce memory usage. Loaded Objects now: 3669.
+Total: 5.216742 ms (FindLiveObjects: 0.287058 ms CreateObjectMapping: 0.140206 ms MarkObjects: 4.763437 ms  DeleteObjects: 0.025147 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 340.770478 seconds.
+  path: Assets/Scenes/UFOLanding
+  artifactKey: Guid(4ed09d2f1ed6f46549bbd4b8e0c98f9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/UFOLanding using Guid(4ed09d2f1ed6f46549bbd4b8e0c98f9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13e325e281460c38a2b0027a5b57782f') in 0.005368 seconds
+  Import took 0.010488 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 35.066724 seconds.
+  path: Assets/Scenes/UFOLanding/Landing01.cs
+  artifactKey: Guid(9a80819457f3b488abbc959c5bc94d4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/UFOLanding/Landing01.cs using Guid(9a80819457f3b488abbc959c5bc94d4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e551be0d1ef50d284a3aada7f12a0992') in 0.002773 seconds
+  Import took 0.007799 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001318 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.86 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.119 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.73 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2980 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 233.7 MB.
+System memory in use after: 234.0 MB.
+
+Unloading 41 unused Assets to reduce memory usage. Loaded Objects now: 3673.
+Total: 5.623394 ms (FindLiveObjects: 0.342927 ms CreateObjectMapping: 0.157659 ms MarkObjects: 5.098447 ms  DeleteObjects: 0.023426 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003505 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.91 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.010 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.86 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2979 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 234.1 MB.
+System memory in use after: 234.3 MB.
+
+Unloading 42 unused Assets to reduce memory usage. Loaded Objects now: 3675.
+Total: 12.795904 ms (FindLiveObjects: 0.752117 ms CreateObjectMapping: 0.406518 ms MarkObjects: 11.557845 ms  DeleteObjects: 0.077922 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 67.117688 seconds.
+  path: Assets/Scenes/UFOLanding/Landing01.unity
+  artifactKey: Guid(aa2c1de29631545cd83d3257cee1c0bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/UFOLanding/Landing01.unity using Guid(aa2c1de29631545cd83d3257cee1c0bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e627b8cb2acf81d7ac1f5632bf37a3d') in 0.013205 seconds
+  Import took 0.019436 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001489 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.68 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.124 seconds
+Platform modules already initialized, skipping
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Refreshing native plugins compatible for Editor in 0.74 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2979 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 234.5 MB.
+System memory in use after: 234.7 MB.
+
+Unloading 41 unused Assets to reduce memory usage. Loaded Objects now: 3678.
+Total: 5.258744 ms (FindLiveObjects: 0.265987 ms CreateObjectMapping: 0.135031 ms MarkObjects: 4.836168 ms  DeleteObjects: 0.020673 ms)
+

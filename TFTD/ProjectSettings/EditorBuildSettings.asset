@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Geoscape.unity
     guid: 8bb8780e2a2cbb24f9349ba0669961ca
+  - enabled: 1
+    path: Assets/Scenes/UFOLanding/Landing01.unity
+    guid: aa2c1de29631545cd83d3257cee1c0bd
   m_configObjects: {}

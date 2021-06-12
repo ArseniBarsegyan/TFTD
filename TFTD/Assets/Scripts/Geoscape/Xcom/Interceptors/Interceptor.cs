@@ -130,7 +130,7 @@ public class Interceptor : MonoBehaviour
         // TODO: pass mission soldiers to battlescape
         Debug.Log("Deploying troops");
         var soldiersToSend = XComObjectsController.SoldiersController.MissionSoldiers;
-        SceneManager.LoadScene("Battlescape");
+        SceneManager.LoadScene("Landing01");
     }
 
     private void TryStartBattle()
